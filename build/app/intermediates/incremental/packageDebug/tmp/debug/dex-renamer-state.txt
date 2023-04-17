@@ -1,0 +1,4 @@
+#Mon Apr 17 21:49:57 CEST 2023
+base.0=C\:\\Users\\Reale\\Scuola\\Framework Flutter\\demiprof_app_testone\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
