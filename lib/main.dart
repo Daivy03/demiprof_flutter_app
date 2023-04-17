@@ -28,31 +28,29 @@ class DemiProf extends StatelessWidget {
                   TextSpan(text: "DEMI"),
                   TextSpan(
                     text: "PROF",
-                    style: TextStyle(color: AppColors.primary),
+                    style: TextStyle(color: AppColors.accent),
                   )
                 ]))),
         body: const Text('Ciao'),
-        bottomNavigationBar: BottomNavigationBar(
-          unselectedLabelStyle: const TextStyle(color: Colors.black),
-          selectedItemColor: AppColors.primary,
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home_filled), label: 'Home'),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.search_rounded,
-                color: Colors.black,
-              ),
-              label: 'Cerca',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.account_circle_outlined,
-                color: Colors.black,
-              ),
-              label: 'Profilo',
-            )
-          ],
+        bottomNavigationBar: NavigationBarTheme(
+          data: const NavigationBarThemeData(
+              height: 55,
+              backgroundColor: Colors.black,
+              indicatorColor: AppColors.accent,
+              iconTheme:
+                  MaterialStatePropertyAll(IconThemeData(color: Colors.white)),
+              labelTextStyle:
+                  MaterialStatePropertyAll(TextStyle(color: Colors.white))),
+          child: NavigationBar(
+            destinations: const [
+              NavigationDestination(
+                  icon: Icon(Icons.home_filled), label: "Home"),
+              NavigationDestination(
+                  icon: Icon(Icons.search_rounded), label: "Cerca"),
+              NavigationDestination(
+                  icon: Icon(Icons.person_outline_rounded), label: "Profilo"),
+            ],
+          ),
         ),
       ),
     );
