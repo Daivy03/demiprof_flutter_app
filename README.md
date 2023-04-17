@@ -1,6 +1,6 @@
-# demiprof_app_testone
+# demiprof_flutter_app
 
-A new Flutter project.
+Demiprof app completely rewrited in flutter.
 
 ## Getting Started
 
