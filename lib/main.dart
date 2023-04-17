@@ -47,7 +47,45 @@ class _DemiProfState extends State<DemiProf> {
             ),
           ),
         ),
-        body: _pages[_currentIndex],
+        body: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Calendario',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  for (int i = 1; i <= 31; i++)
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.grey,
+                      ),
+                      child: Center(
+                        child: Text(
+                          i.toString(),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.black,
           unselectedItemColor: Colors.white,
@@ -64,12 +102,12 @@ class _DemiProfState extends State<DemiProf> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search_rounded),
-              label: 'Cerca',
+              icon: Icon(Icons.search),
+              label: 'Search',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline_rounded),
-              label: 'Profilo',
+              icon: Icon(Icons.person),
+              label: 'Profile',
             ),
           ],
         ),
@@ -83,8 +121,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Home Page'),
+    return Container(
+      color: Colors.blue,
+      child: const Center(
+        child: Text('Home Page'),
+      ),
     );
   }
 }
@@ -94,8 +135,11 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Search Page'),
+    return Container(
+      color: Colors.green,
+      child: const Center(
+        child: Text('Search Page'),
+      ),
     );
   }
 }
@@ -105,8 +149,11 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Profile Page'),
+    return Container(
+      color: Colors.pink,
+      child: const Center(
+        child: Text('Profile Page'),
+      ),
     );
   }
 }
