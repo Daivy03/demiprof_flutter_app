@@ -76,12 +76,17 @@ class _LoginPageState extends State<LoginPage> {
   Widget _submitButton() {
     return ElevatedButton(
       style: ButtonStyle(
-        textStyle: MaterialStatePropertyAll(GoogleFonts.poppins(
+        textStyle: MaterialStateProperty.all(GoogleFonts.poppins(
           fontSize: 15,
           fontWeight: FontWeight.w500,
           color: Colors.white,
         )),
         backgroundColor: MaterialStateProperty.all<Color>(AppColors.accent),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
       ),
       onPressed:
           isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
@@ -96,12 +101,20 @@ class _LoginPageState extends State<LoginPage> {
           isLogin = !isLogin;
         });
       },
+      style: TextButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+      ),
       child: Text(
         isLogin
             ? 'Non sei registrato? Registrati qui'
-            : 'Già registato? Accedi qui',
+            : 'Già registrato? Accedi qui',
         style: GoogleFonts.poppins(
-            color: Colors.white, fontSize: 14, fontStyle: FontStyle.normal),
+          color: Colors.white,
+          fontSize: 14,
+          fontStyle: FontStyle.normal,
+        ),
       ),
     );
   }
