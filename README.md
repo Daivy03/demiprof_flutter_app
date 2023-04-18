@@ -16,7 +16,11 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 ### TO INSTALL:
+<a href="https://pub.dev/packages/cloud_firestore">cloud_firestore</a> 
 ```
 flutter pub add firebase_core
 ```
-<a href="https://pub.dev/packages/cloud_firestore">cloud_firestore</a>  
+<a href="https://pub.dev/packages/firebase_core/install">firebase_core</a> 
+```
+flutter pub add firebase_core
+``` 
