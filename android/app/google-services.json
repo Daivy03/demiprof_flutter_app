@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "831590076582",
+    "firebase_url": "https://demiprof-b12be-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "demiprof-b12be",
+    "storage_bucket": "demiprof-b12be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831590076582:android:5c061feed296b1fa31e467",
+        "android_client_info": {
+          "package_name": "com.dmp.demiprof"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831590076582-1id7rcscp7opojdvh18ah7bme255c1pc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dmp.demiprof",
+            "certificate_hash": "539385d38b120855043c8be121825947d2a63045"
+          }
+        },
+        {
+          "client_id": "831590076582-acpe2h5r30cuh3an3p3cp98b5fooarjl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dmp.demiprof",
+            "certificate_hash": "509d282ecabfc88d9bfdc519fa1cc7d5b33bbe22"
+          }
+        },
+        {
+          "client_id": "831590076582-f3ps0rsglkvjei5dim8oflra2a57md6r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBozSOtFPPJRKvePDuG8wGmtK0dVqgYJBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831590076582-f3ps0rsglkvjei5dim8oflra2a57md6r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831590076582:android:5889ea03e9d69f8331e467",
+        "android_client_info": {
+          "package_name": "edu.demiprof.tutorapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831590076582-f3ps0rsglkvjei5dim8oflra2a57md6r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBozSOtFPPJRKvePDuG8wGmtK0dVqgYJBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831590076582-f3ps0rsglkvjei5dim8oflra2a57md6r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

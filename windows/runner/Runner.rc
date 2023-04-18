@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "demiprof_app_testone" "\0"
+            VALUE "FileDescription", "demiprof_flutter_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "demiprof_app_testone" "\0"
+            VALUE "InternalName", "demiprof_flutter_app" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "demiprof_app_testone.exe" "\0"
-            VALUE "ProductName", "demiprof_app_testone" "\0"
+            VALUE "OriginalFilename", "demiprof_flutter_app.exe" "\0"
+            VALUE "ProductName", "demiprof_flutter_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

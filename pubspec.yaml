@@ -38,6 +38,9 @@ dependencies:
   dynamic_color: ^1.6.3
   google_fonts: ^4.0.3
   flutter_svg: ^2.0.5
+  cloud_firestore: ^4.5.2
+  firebase_core: ^2.10.0
+  firebase_auth: ^4.4.2
 
 dev_dependencies:
   flutter_test:

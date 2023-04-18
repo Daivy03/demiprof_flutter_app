@@ -1,4 +1,4 @@
-package com.example.demiprof_app_testone
+package com.example.demiprof_flutter_app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:demiprof_flutter_app/custom_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:demiprof_flutter_app/auth.dart';
+import 'package:demiprof_flutter_app/profile_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:demiprof_flutter_app/widget_tree.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const DemiProf());
 }
 
@@ -20,13 +27,16 @@ class _DemiProfState extends State<DemiProf> {
   final List<Widget> _pages = [
     const HomePage(),
     const SearchPage(),
-    const ProfilePage(),
+    ProfilePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: WidgetTree(),
+
+      /* Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
           forceMaterialTransparency: true,
@@ -47,45 +57,7 @@ class _DemiProfState extends State<DemiProf> {
             ),
           ),
         ),
-        body: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Calendario',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  for (int i = 1; i <= 31; i++)
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.grey,
-                      ),
-                      child: Center(
-                        child: Text(
-                          i.toString(),
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.black,
           unselectedItemColor: Colors.white,
@@ -103,15 +75,16 @@ class _DemiProfState extends State<DemiProf> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.search),
-              label: 'Search',
+              label: 'Cerca',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: 'Profile',
+              label: 'Profilo',
             ),
           ],
         ),
       ),
+     */
     );
   }
 }
@@ -144,8 +117,22 @@ class SearchPage extends StatelessWidget {
   }
 }
 
-class ProfilePage extends StatelessWidget {
+/* class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
+
+  final User? user = Auth().currentUser;
+
+  Future<void> signOut() async {
+    await Auth().signOut();
+  }
+
+  Widget _title() {
+    return Text('Firebase auth');
+  }
+
+  Widget _userUid() {
+    return Text(user?.email ?? 'User email');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,4 +143,4 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
-}
+} */

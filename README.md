@@ -18,7 +18,7 @@ samples, guidance on mobile development, and a full API reference.
 ### TO INSTALL:
 <a href="https://pub.dev/packages/cloud_firestore">cloud_firestore</a> 
 ```
-flutter pub add firebase_core
+flutter pub add cloud_firestore
 ```
 <a href="https://pub.dev/packages/firebase_core/install">firebase_core</a> 
 ```
