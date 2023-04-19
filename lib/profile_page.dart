@@ -55,13 +55,6 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        leading: Image.asset(
-          'lib/icons/dmp_logo30.png',
-        ),
-        title: _title(),
-      ),
       body: Container(
         height: double.infinity,
         width: double.infinity,

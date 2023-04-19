@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
     return ElevatedButton(
       style: ButtonStyle(
         textStyle: MaterialStateProperty.all(GoogleFonts.poppins(
-          fontSize: 15,
+          fontSize: 18, // imposta la dimensione del testo del pulsante
           fontWeight: FontWeight.w500,
           color: Colors.white,
         )),
@@ -87,6 +87,9 @@ class _LoginPageState extends State<LoginPage> {
             borderRadius: BorderRadius.circular(20),
           ),
         ),
+        minimumSize: MaterialStateProperty.all(
+            Size(200, 50)), // imposta la larghezza e l'altezza del pulsante
+        alignment: Alignment.center, // posiziona il pulsante al centro
       ),
       onPressed:
           isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
