@@ -14,8 +14,12 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String? errorMessage = '';
   bool isLogin = true;
+  bool _showPassword = false;
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
+  final TextEditingController _controllerConfPassword = TextEditingController();
+  final TextEditingController _controllerName = TextEditingController();
+  final TextEditingController _controllerSurname = TextEditingController();
 
   Future<void> signInWithEmailAndPassword() async {
     try {
@@ -39,16 +43,42 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Widget _title() {
-    return const Text('DEMIPROF');
+  void _togglePasswordVisibility() {
+    setState(() {
+      _showPassword = !_showPassword;
+    });
   }
 
-  Widget _entryField(
-    String title,
-    TextEditingController controller,
-  ) {
+  Widget _signUpFields() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: EdgeInsets.only(top: 50),
+      child: Column(
+        children: [
+          _entryField('Nome', _controllerName),
+          _entryField('Cognome', _controllerSurname),
+          _entryField('Email', _controllerEmail),
+          _entryPasswordField('Password', _controllerPassword),
+          _entryPasswordField('Conferma password', _controllerConfPassword)
+        ],
+      ),
+    );
+  }
+
+  Widget _loginFields() {
+    return Container(
+      margin: const EdgeInsets.only(top: 90),
+      child: Column(
+        children: [
+          _entryField('Email', _controllerEmail),
+          _entryPasswordField('Password', _controllerPassword),
+        ],
+      ),
+    );
+  }
+
+  Widget _entryField(String title, TextEditingController controller) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.4),
         borderRadius: BorderRadius.circular(30),
@@ -57,10 +87,48 @@ class _LoginPageState extends State<LoginPage> {
         style: GoogleFonts.poppins(fontSize: 15, color: Colors.white),
         controller: controller,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           hintText: title,
           hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
           border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _entryPasswordField(String title, TextEditingController controller) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: TextField(
+        style: GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+        controller: controller,
+        obscureText: !_showPassword,
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          hintText: title,
+          hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+          border: InputBorder.none,
+          suffixIcon: title == 'Password'
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _showPassword = !_showPassword;
+                    });
+                  },
+                  icon: Icon(
+                    _showPassword
+                        ? Icons.visibility_off_rounded
+                        : Icons.visibility_rounded,
+                    color: Colors.white,
+                  ),
+                )
+              : null,
         ),
       ),
     );
@@ -77,18 +145,18 @@ class _LoginPageState extends State<LoginPage> {
     return ElevatedButton(
       style: ButtonStyle(
         textStyle: MaterialStateProperty.all(GoogleFonts.poppins(
-          fontSize: 18, // imposta la dimensione del testo del pulsante
+          fontSize: 23, // imposta la dimensione del testo del pulsante
           fontWeight: FontWeight.w500,
           color: Colors.white,
         )),
         backgroundColor: MaterialStateProperty.all<Color>(AppColors.accent),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(50),
           ),
         ),
-        minimumSize: MaterialStateProperty.all(
-            Size(200, 50)), // imposta la larghezza e l'altezza del pulsante
+        minimumSize: MaterialStateProperty.all(const Size(
+            300, 60)), // imposta la larghezza e l'altezza del pulsante
         alignment: Alignment.center, // posiziona il pulsante al centro
       ),
       onPressed:
@@ -124,41 +192,51 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        leading: Image.asset(
-          'lib/icons/dmp_logo30.png',
-        ),
-        title: RichText(
-          text: TextSpan(
-            style:
-                GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
-            children: const [
-              TextSpan(text: "DEMI"),
-              TextSpan(
-                text: "PROF",
-                style: TextStyle(color: AppColors.accent),
-              )
-            ],
-          ),
+    return Theme(
+      data: ThemeData(
+        primaryColor: AppColors.accent,
+        textTheme: GoogleFonts.poppinsTextTheme(
+          Theme.of(context).textTheme,
         ),
       ),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _entryField('email', _controllerEmail),
-            _entryField('password', _controllerPassword),
-            _errorMessage(),
-            _submitButton(),
-            _loginOrRegisterButton(),
-          ],
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Container(
+          height: double.infinity,
+          width: double.infinity,
+          margin: EdgeInsets.only(top: isLogin ? 150 : 100),
+          padding: const EdgeInsets.all(5),
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 90,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Image.asset(
+                    'lib/icons/demiprof_full_logo.png',
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Column(
+                  children: <Widget>[
+                    isLogin ? _loginFields() : _signUpFields(),
+                    _errorMessage(),
+                    Container(
+                      margin: EdgeInsets.only(top: isLogin ? 20 : 60),
+                      child: Column(
+                        children: [
+                          _submitButton(),
+                          _loginOrRegisterButton(),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

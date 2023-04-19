@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:demiprof_flutter_app/custom_colors.dart';
 import 'package:demiprof_flutter_app/profile_page.dart';
-import 'main.dart';
+import 'package:demiprof_flutter_app/widget_pages.dart';
+import 'package:demiprof_flutter_app/search_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,10 +16,11 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    const HomePage(),
+    //const HomePage(),
     const SearchPage(),
     ProfilePage(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

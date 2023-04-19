@@ -1,4 +1,5 @@
 import 'package:demiprof_flutter_app/main.dart';
+import 'package:demiprof_flutter_app/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:demiprof_flutter_app/login_page.dart';
 import 'package:demiprof_flutter_app/auth.dart';
@@ -18,7 +19,14 @@ class _WidgetTreeState extends State<WidgetTree> {
       stream: Auth().authStateChanges,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return const HomePage();
+          // Naviga alla HomePage()
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomePage(),
+            ),
+          );
+          return const SizedBox(); // restituisci un widget vuoto per evitare di visualizzare la HomePage() due volte
         } else {
           return const LoginPage();
         }
