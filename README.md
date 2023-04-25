@@ -15,12 +15,15 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-### TO INSTALL:
-<a href="https://pub.dev/packages/cloud_firestore">cloud_firestore</a> 
-```
-flutter pub add cloud_firestore
-```
-<a href="https://pub.dev/packages/firebase_core/install">firebase_core</a> 
-```
-flutter pub add firebase_core
-``` 
+## Material Design 3 "Material You"
+<img src="https://i.imgur.com/lkmgsMz.jpeg" width="50%"/>
+
+### Guidelines
+- [Get Started with Material 3](https://m3.material.io/get-started)
+- [Flutter Docs for Material 3](https://m3.material.io/develop/flutter)
+
+#### Resources
+https://m3.material.io/theme-builder#/custom
+https://fonts.google.com/
+https://pictogrammers.com/library/mdi/
+https://www.fluttericon.com/
