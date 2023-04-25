@@ -24,6 +24,9 @@ samples, guidance on mobile development, and a full API reference.
 
 #### Resources
 https://m3.material.io/theme-builder#/custom
+</br>
 https://fonts.google.com/
+</br>
 https://pictogrammers.com/library/mdi/
+</br>
 https://www.fluttericon.com/
