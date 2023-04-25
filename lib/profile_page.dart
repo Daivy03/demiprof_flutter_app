@@ -370,30 +370,6 @@ class ProfilePage extends StatelessWidget {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.access_time_filled,
-                            color: darkColorScheme.onSecondaryContainer,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Lezioni disponibili',
-                            style: GoogleFonts.poppins(
-                                fontSize: 19,
-                                color: darkColorScheme.onSecondaryContainer),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
                 SizedBox(
                   height: 6,
                 ),

@@ -23,6 +23,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
       PopularFilterListData.popularFList;
   List<PopularFilterListData> accomodationListData = accomodationList;
 
+  final TextEditingController _searchController = TextEditingController();
+  List<QueryDocumentSnapshot> _searchResults = [];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -109,7 +112,14 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   padding: const EdgeInsets.only(
                       left: 16, right: 16, top: 4, bottom: 4),
                   child: TextField(
-                    onChanged: (String txt) {},
+                    controller: _searchController,
+                    onChanged: (value) {
+                      searchUsers(value).then((results) {
+                        setState(() {
+                          _searchResults = results;
+                        });
+                      });
+                    },
                     style: const TextStyle(
                       fontSize: 18,
                     ),
@@ -336,11 +346,38 @@ class _FiltersScreenState extends State<FiltersScreen> {
     }
   }
 
+  Future<List<QueryDocumentSnapshot>> searchUsers(String term) async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      // Effettua la query su Firestore filtrando i documenti che contengono il termine cercato
+      QuerySnapshot querySnapshot = await firestore
+          .collection('users')
+          .where('name', isGreaterThanOrEqualTo: term)
+          .get();
+
+      // Ritorna la lista dei documenti trovati
+      return querySnapshot.docs;
+    } catch (e) {
+      print('Errore durante la ricerca degli utenti: $e');
+      return [];
+    }
+  }
+
   Widget popularFilter() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        /* ListView.builder(
+          itemCount: _searchResults.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(_searchResults[index]['name']),
+              subtitle: Text(_searchResults[index]['email']),
+            );
+          },
+        ), */
         Padding(
           padding:
               const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
