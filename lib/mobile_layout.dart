@@ -22,6 +22,7 @@ class _MobileLayoutState extends State<MobileLayout> {
   int index = 0;
   bool isTutor = false;
   String _tutorId = "";
+  late PageController pageController;
 
   final _pages = [
     HomePage(),
@@ -78,7 +79,15 @@ class _MobileLayoutState extends State<MobileLayout> {
   @override
   void initState() {
     super.initState();
+    pageController = PageController();
     getTutorId();
+  }
+
+//vecchio modo per bottomnavigatiobar https://youtu.be/mEPm9w5QlJM
+  @override
+  void dispose() {
+    super.dispose();
+    pageController.dispose();
   }
 
 //recupero dati utente per indetificarne ruolo
@@ -122,25 +131,6 @@ class _MobileLayoutState extends State<MobileLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[index],
-      /* Column(
-        children: [
-          const SizedBox(height: 40),
-          _signOutButton(),
-          Center(
-            child: RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: _tutorId,
-                style: TextStyle(color: darkColorScheme.secondary),
-              ),
-              TextSpan(
-                text: " :tutorId",
-                style: TextStyle(color: darkColorScheme.secondary),
-              ),
-            ])),
-          ),
-        ],
-      ), */
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
             height: 70,
@@ -165,3 +155,22 @@ class _MobileLayoutState extends State<MobileLayout> {
     );
   }
 }
+/* Column(
+        children: [
+          const SizedBox(height: 40),
+          _signOutButton(),
+          Center(
+            child: RichText(
+                text: TextSpan(children: [
+              TextSpan(
+                text: _tutorId,
+                style: TextStyle(color: darkColorScheme.secondary),
+              ),
+              TextSpan(
+                text: " :tutorId",
+                style: TextStyle(color: darkColorScheme.secondary),
+              ),
+            ])),
+          ),
+        ],
+      ), */

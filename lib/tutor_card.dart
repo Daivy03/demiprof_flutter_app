@@ -77,11 +77,11 @@ class _TutorCardState extends State<TutorCard> {
                                 topLeft: Radius.circular(15),
                                 topRight: Radius.circular(15),
                               ),
-                              /* child: Image.asset(
+                              child: Image.asset(
                                 "lib/icons/onlylogo.png",
                                 height: 90,
                                 width: 90,
-                              ),  */
+                              ),
                             ),
                           ),
                           Container(
