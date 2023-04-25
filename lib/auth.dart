@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'models/user_app.dart' as model;
 import 'package:demiprof_flutter_app/models/roles.dart';
-import 'package:demiprof_flutter_app/mobile_layout.dart';
 
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -42,6 +41,7 @@ class Auth {
       borndate: "",
       classe: "",
       materie: [],
+      stars: 0,
     );
     await _firestore
         .collection("users")

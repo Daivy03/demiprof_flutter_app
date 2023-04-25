@@ -1,5 +1,8 @@
+import 'package:demiprof_flutter_app/book_page.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
 import 'package:demiprof_flutter_app/custom_colors.dart';
+import 'package:demiprof_flutter_app/home_page.dart';
+import 'package:demiprof_flutter_app/user_settingpage.dart';
 import 'package:demiprof_flutter_app/widgets/currentLoggedUser.dart';
 import 'package:demiprof_flutter_app/widgets/modal_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,89 +32,106 @@ class SignInOptionsScreen extends StatelessWidget {
             ),
           ),
         ),
-        Column(children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Container(
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                  child: Row(
-                    children: [
-                      Icon(Icons.settings,
-                          size: 25, color: darkColorScheme.onBackground),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Impostazioni",
-                          style: GoogleFonts.montserrat(
-                              color: darkColorScheme.onBackground))
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.description,
-                        size: 25,
-                        color: darkColorScheme.onBackground,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Termini e Privacy",
-                          style: GoogleFonts.montserrat(
-                              color: darkColorScheme.onBackground))
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline_rounded,
-                        size: 25,
-                        color: darkColorScheme.onBackground,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Info app",
-                          style: GoogleFonts.montserrat(
-                              color: darkColorScheme.onBackground))
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                  child: Row(
-                    children: [
-                      Icon(
-                        MdiIcons.logout,
-                        size: 25,
-                        color: darkColorScheme.onBackground,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Log out",
-                          style: GoogleFonts.montserrat(
-                              color: darkColorScheme.onBackground))
-                    ],
-                  ),
-                ),
-              ],
+        Column(
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-          ),
-        ])
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => UserSettingPage()));
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                child: Row(
+                  children: [
+                    Icon(Icons.settings,
+                        size: 25, color: darkColorScheme.onBackground),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Impostazioni",
+                        style: GoogleFonts.montserrat(
+                            color: darkColorScheme.onBackground))
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                // TODO: Gestire l'azione per i termini e la privacy
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.description,
+                      size: 25,
+                      color: darkColorScheme.onBackground,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Termini e Privacy",
+                        style: GoogleFonts.montserrat(
+                            color: darkColorScheme.onBackground))
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                // TODO: Gestire l'azione per le info app
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline_rounded,
+                      size: 25,
+                      color: darkColorScheme.onBackground,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Info app",
+                        style: GoogleFonts.montserrat(
+                            color: darkColorScheme.onBackground))
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                signOut();
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                child: Row(
+                  children: [
+                    Icon(
+                      MdiIcons.logout,
+                      size: 25,
+                      color: darkColorScheme.onBackground,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Log out",
+                        style: GoogleFonts.montserrat(
+                            color: darkColorScheme.onBackground))
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -158,6 +178,289 @@ class ProfilePage extends StatelessWidget {
     await Auth().signOut();
   }
 
+  Widget _userUid() {
+    return Text(
+      user?.email ?? 'User email',
+      style: GoogleFonts.poppins(
+          fontSize: 20,
+          color: darkColorScheme.onBackground,
+          fontWeight: FontWeight.w600),
+    );
+  }
+
+  Widget userBook(context) {
+    return Material(
+      color: darkColorScheme.background,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 300,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/circleavatar.png'),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(15),
+                  bottomRight: Radius.circular(15),
+                ),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      darkColorScheme.surface.withOpacity(0.9),
+                      darkColorScheme.secondary.withOpacity(0),
+                      darkColorScheme.secondary.withOpacity(0),
+                    ],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 30, left: 10, right: 10),
+                      child: Row(
+                        children: [
+                          /* Container(
+                            margin: EdgeInsets.only(left: 15),
+                            height: 45,
+                            width: 45,
+                            decoration: BoxDecoration(
+                              color: darkColorScheme.primary,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: darkColorScheme.secondary,
+                                  blurRadius: 4,
+                                  spreadRadius: 1,
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.favorite_border_outlined,
+                              ),
+                            ),
+                          ), */
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 80,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _userUid(),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              //text
+                              Column(
+                                children: [
+                                  Text(
+                                    'Classe',
+                                    style: GoogleFonts.poppins(fontSize: 16),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.event_available_rounded,
+                                color: darkColorScheme.onSecondaryContainer,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Lezioni prenotate',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 19,
+                                    color:
+                                        darkColorScheme.onSecondaryContainer),
+                              ),
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                Container(
+                  height: 70,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 6,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 10),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: index == 1
+                                  ? darkColorScheme.tertiary
+                                  : darkColorScheme.onSecondary,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: darkColorScheme.primary,
+                                  blurRadius: 1,
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                //TODO: caricare giorni disponibili dal db
+                                Text(
+                                  "${index + 8}",
+                                  style: GoogleFonts.poppins(
+                                      color: index == 1
+                                          ? darkColorScheme.secondaryContainer
+                                          : darkColorScheme.primary),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text("DEC"),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.access_time_filled,
+                            color: darkColorScheme.onSecondaryContainer,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Lezioni disponibili',
+                            style: GoogleFonts.poppins(
+                                fontSize: 19,
+                                color: darkColorScheme.onSecondaryContainer),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                Container(
+                  height: 70,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 6,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 10),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: index == 1
+                                  ? darkColorScheme.tertiary
+                                  : darkColorScheme.onSecondary,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: darkColorScheme.primary,
+                                  blurRadius: 1,
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                //TODO: caricare giorni disponibili dal db
+                                Text(
+                                  "${index + 15} AM",
+                                  style: GoogleFonts.poppins(
+                                      color: index == 1
+                                          ? darkColorScheme.secondaryContainer
+                                          : darkColorScheme.primary),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: 130),
+                Material(
+                  color: darkColorScheme.primary,
+                  borderRadius: BorderRadius.circular(35),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 1,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _title() {
     return RichText(
       text: TextSpan(
@@ -173,13 +476,13 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _userUid() {
+  /*  Widget _userUid() {
     return Text(
       user?.email ?? 'User email',
       style: GoogleFonts.poppins(
           fontSize: 15, color: darkColorScheme.onBackground),
     );
-  }
+  } */
 
   Widget _signOutButton() {
     return ElevatedButton(
@@ -234,7 +537,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ],
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: darkColorScheme.background,
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -243,7 +546,8 @@ class ProfilePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _signOutButton(),
+            userBook(context),
+            //_signOutButton(),
           ],
         ),
       ),

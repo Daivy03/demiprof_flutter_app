@@ -8,6 +8,7 @@ class User {
   final String borndate;
   final String classe;
   final List<String> materie;
+  final int stars;
 
   const User({
     required this.email,
@@ -17,6 +18,7 @@ class User {
     required this.borndate,
     required this.classe,
     required this.materie,
+    required this.stars,
   });
 
   Map<String, dynamic> toJson() => {
@@ -27,5 +29,6 @@ class User {
         "borndate": borndate,
         "classe": classe,
         "materie": materie,
+        "stars": stars,
       };
 }

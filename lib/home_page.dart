@@ -1,16 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
-import 'package:dynamic_color/samples.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:demiprof_flutter_app/custom_colors.dart';
-import 'package:demiprof_flutter_app/profile_page.dart';
-import 'package:demiprof_flutter_app/route_generator.dart';
-import 'package:demiprof_flutter_app/search_page.dart';
 import 'auth.dart';
-import 'package:demiprof_flutter_app/widgets/currentLoggedUser.dart';
 import 'package:demiprof_flutter_app/tutor_card.dart';
 
 //metodo che chiama il signout
@@ -19,26 +14,6 @@ Future<void> signOut() async {
 }
 
 //aggiunta temporanea signOutbutton
-Widget _signOutButton() {
-  return Padding(
-    padding: const EdgeInsets.only(left: 15),
-    child: ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor:
-            MaterialStateProperty.all<Color>(darkColorScheme.tertiaryContainer),
-      ),
-      onPressed: signOut,
-      child: Text(
-        'Logout',
-        style: GoogleFonts.montserrat(
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
-          color: Colors.white,
-        ),
-      ),
-    ),
-  );
-}
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -160,9 +135,6 @@ class _HomePageState extends State<HomePage> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              child: _signOutButton(),
-            ),
             Expanded(
               flex: -2,
               child: Row(
@@ -207,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  const Expanded(
+                  Expanded(
                     flex: 1,
                     child: Padding(
                       padding: EdgeInsets.only(right: 15),
@@ -217,12 +189,9 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ClipOval(
                             child: SizedBox(
-                              width: 60,
-                              height: 60,
-                              child: Image(
-                                fit: BoxFit.cover,
-                                image: AssetImage("lib/icons/onlylogo.png"),
-                              ),
+                              width: 70,
+                              height: 70,
+                              child: SvgPicture.asset("assets/pic_profile.svg"),
                             ),
                           ),
                         ],

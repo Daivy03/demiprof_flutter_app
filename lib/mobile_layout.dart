@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demiprof_flutter_app/book_page.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
+import 'package:demiprof_flutter_app/filters_screen.dart';
 import 'package:demiprof_flutter_app/home_page.dart';
 import 'package:demiprof_flutter_app/profile_page.dart';
 import 'package:demiprof_flutter_app/search_page.dart';
@@ -26,7 +28,9 @@ class _MobileLayoutState extends State<MobileLayout> {
 
   final _pages = [
     HomePage(),
-    SearchPage(),
+    //SearchPage(),
+    FiltersScreen(),
+    //BookPage(),
     ProfilePage(),
   ];
 
@@ -155,22 +159,3 @@ class _MobileLayoutState extends State<MobileLayout> {
     );
   }
 }
-/* Column(
-        children: [
-          const SizedBox(height: 40),
-          _signOutButton(),
-          Center(
-            child: RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: _tutorId,
-                style: TextStyle(color: darkColorScheme.secondary),
-              ),
-              TextSpan(
-                text: " :tutorId",
-                style: TextStyle(color: darkColorScheme.secondary),
-              ),
-            ])),
-          ),
-        ],
-      ), */
