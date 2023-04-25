@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
+import 'package:demiprof_flutter_app/home_page.dart';
+import 'package:demiprof_flutter_app/profile_page.dart';
+import 'package:demiprof_flutter_app/search_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,6 +22,12 @@ class _MobileLayoutState extends State<MobileLayout> {
   int index = 0;
   bool isTutor = false;
   String _tutorId = "";
+
+  final _pages = [
+    HomePage(),
+    SearchPage(),
+    ProfilePage(),
+  ];
 
   //navbar icons per ruolo
   final tutorButtons = [
@@ -112,8 +121,10 @@ class _MobileLayoutState extends State<MobileLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: _pages[index],
+      /* Column(
         children: [
+          const SizedBox(height: 40),
           _signOutButton(),
           Center(
             child: RichText(
@@ -129,7 +140,7 @@ class _MobileLayoutState extends State<MobileLayout> {
             ])),
           ),
         ],
-      ),
+      ), */
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
             height: 70,
