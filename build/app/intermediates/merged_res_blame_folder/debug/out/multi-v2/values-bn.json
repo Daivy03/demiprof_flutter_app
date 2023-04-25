@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.demiprof_flutter_app-mergeDebugResources-14:/values-bn/values-bn.xml",
+            "outputFile": "com.example.demiprof_flutter_app-mergeDebugResources-21:/values-bn/values-bn.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Reale\\.gradle\\caches\\transforms-3\\a8d5665db2dab5bb55b993127abcdbdc\\transformed\\browser-1.4.0\\res\\values-bn\\values-bn.xml",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Reale\\.gradle\\caches\\transforms-3\\72d701307b1115688b608c7110be19e8\\transformed\\core-1.6.0\\res\\values-bn\\values-bn.xml",
+                    "source": "C:\\Users\\Reale\\.gradle\\caches\\transforms-3\\9c1d2e404caec33c1b4c5b322860d26e\\transformed\\core-1.9.0\\res\\values-bn\\values-bn.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

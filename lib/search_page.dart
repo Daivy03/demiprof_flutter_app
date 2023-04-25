@@ -8,8 +8,11 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Text("Cerca Tutor"),
+    return Container(
+      color: Colors.green,
+      child: const Center(
+        child: Text('Search Page'),
+      ),
     );
   }
 }

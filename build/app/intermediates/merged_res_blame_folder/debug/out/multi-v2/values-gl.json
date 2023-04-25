@@ -1,25 +1,8 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.demiprof_flutter_app-mergeDebugResources-14:/values-gl/values-gl.xml",
+            "outputFile": "com.example.demiprof_flutter_app-mergeDebugResources-21:/values-gl/values-gl.xml",
             "map": [
-                {
-                    "source": "C:\\Users\\Reale\\.gradle\\caches\\transforms-3\\72d701307b1115688b608c7110be19e8\\transformed\\core-1.6.0\\res\\values-gl\\values-gl.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "24",
-                        "startColumns": "4",
-                        "startOffsets": "2763",
-                        "endColumns": "100",
-                        "endOffsets": "2859"
-                    }
-                },
                 {
                     "source": "C:\\Users\\Reale\\.gradle\\caches\\transforms-3\\a8d5665db2dab5bb55b993127abcdbdc\\transformed\\browser-1.4.0\\res\\values-gl\\values-gl.xml",
                     "from": {
@@ -69,6 +52,23 @@
                         "startOffsets": "1080",
                         "endColumns": "133",
                         "endOffsets": "1209"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Reale\\.gradle\\caches\\transforms-3\\9c1d2e404caec33c1b4c5b322860d26e\\transformed\\core-1.9.0\\res\\values-gl\\values-gl.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "24",
+                        "startColumns": "4",
+                        "startOffsets": "2763",
+                        "endColumns": "100",
+                        "endOffsets": "2859"
                     }
                 }
             ]

@@ -1,8 +1,13 @@
+import 'package:demiprof_flutter_app/color_schemes.g.dart';
 import 'package:demiprof_flutter_app/custom_colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../auth.dart';
 import 'package:flutter/material.dart';
+// ignore: unused_import
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'models/roles.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -14,10 +19,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String? errorMessage = '';
   bool isLogin = true;
+  bool isLoading = false;
   bool _showPassword = false;
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
-  final TextEditingController _controllerConfPassword = TextEditingController();
   final TextEditingController _controllerName = TextEditingController();
   final TextEditingController _controllerSurname = TextEditingController();
 
@@ -28,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
+        isLoading = true;
       });
     }
   }
@@ -35,7 +41,15 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> createUserWithEmailAndPassword() async {
     try {
       await Auth().createUserWithEmailAndPassword(
-          email: _controllerEmail.text, password: _controllerPassword.text);
+        email: _controllerEmail.text,
+        password: _controllerPassword.text,
+        name: _controllerName.text,
+        surname: _controllerSurname.text,
+        tutorId: "",
+      );
+      // ignore: use_build_context_synchronously
+      showMessage(
+          context); //funzionante TODO: passare il toastMessage al navigator della homepage
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -43,22 +57,44 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _togglePasswordVisibility() {
-    setState(() {
-      _showPassword = !_showPassword;
-    });
+  void showMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        duration: const Duration(seconds: 2),
+        content: Row(
+          children: [
+            SpinKitRing(
+              color: darkColorScheme.onBackground,
+              lineWidth: 3,
+              size: 30,
+            ),
+            const SizedBox(width: 20),
+            Text(
+              'Registrazione effettuata!',
+              style: GoogleFonts.poppins(
+                  color: darkColorScheme.onBackground, fontSize: 16),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _roles() {
+    return Roles();
   }
 
   Widget _signUpFields() {
     return Container(
-      margin: EdgeInsets.only(top: 50),
+      margin: const EdgeInsets.only(top: 50),
       child: Column(
         children: [
           _entryField('Nome', _controllerName),
           _entryField('Cognome', _controllerSurname),
           _entryField('Email', _controllerEmail),
           _entryPasswordField('Password', _controllerPassword),
-          _entryPasswordField('Conferma password', _controllerConfPassword)
+          _roles(),
         ],
       ),
     );
@@ -69,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
       margin: const EdgeInsets.only(top: 90),
       child: Column(
         children: [
-          _entryField('Email', _controllerEmail),
+          _entryEmailField('Email', _controllerEmail),
           _entryPasswordField('Password', _controllerPassword),
         ],
       ),
@@ -80,17 +116,44 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.4),
+        color: darkColorScheme.onBackground.withOpacity(0.4),
         borderRadius: BorderRadius.circular(30),
       ),
       child: TextField(
-        style: GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+        keyboardType: TextInputType.name,
+        style: GoogleFonts.poppins(
+            fontSize: 15, color: darkColorScheme.onBackground),
         controller: controller,
         decoration: InputDecoration(
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           hintText: title,
-          hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+          hintStyle:
+              TextStyle(color: darkColorScheme.onBackground.withOpacity(0.7)),
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _entryEmailField(String title, TextEditingController controller) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        color: darkColorScheme.onBackground.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: TextField(
+        keyboardType: TextInputType.emailAddress,
+        style: GoogleFonts.poppins(
+            fontSize: 15, color: darkColorScheme.onBackground),
+        controller: controller,
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          hintText: title,
+          hintStyle:
+              TextStyle(color: darkColorScheme.onBackground.withOpacity(0.7)),
           border: InputBorder.none,
         ),
       ),
@@ -99,20 +162,22 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _entryPasswordField(String title, TextEditingController controller) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.4),
+        color: darkColorScheme.onBackground.withOpacity(0.4),
         borderRadius: BorderRadius.circular(30),
       ),
       child: TextField(
-        style: GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+        style: GoogleFonts.poppins(
+            fontSize: 15, color: darkColorScheme.onBackground),
         controller: controller,
         obscureText: !_showPassword,
         decoration: InputDecoration(
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           hintText: title,
-          hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+          hintStyle:
+              TextStyle(color: darkColorScheme.onBackground.withOpacity(0.7)),
           border: InputBorder.none,
           suffixIcon: title == 'Password'
               ? IconButton(
@@ -125,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                     _showPassword
                         ? Icons.visibility_off_rounded
                         : Icons.visibility_rounded,
-                    color: Colors.white,
+                    color: darkColorScheme.onBackground,
                   ),
                 )
               : null,
@@ -137,7 +202,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget _errorMessage() {
     return Text(
       errorMessage == '' ? '' : 'Error:$errorMessage',
-      style: GoogleFonts.poppins(color: Colors.white, fontSize: 11),
+      style: GoogleFonts.poppins(
+          color: darkColorScheme.onBackground, fontSize: 11),
     );
   }
 
@@ -147,9 +213,10 @@ class _LoginPageState extends State<LoginPage> {
         textStyle: MaterialStateProperty.all(GoogleFonts.poppins(
           fontSize: 23, // imposta la dimensione del testo del pulsante
           fontWeight: FontWeight.w500,
-          color: Colors.white,
+          color: darkColorScheme.onBackground,
         )),
-        backgroundColor: MaterialStateProperty.all<Color>(AppColors.accent),
+        backgroundColor:
+            MaterialStateProperty.all<Color>(darkColorScheme.primaryContainer),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50),
@@ -161,7 +228,12 @@ class _LoginPageState extends State<LoginPage> {
       ),
       onPressed:
           isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
-      child: Text(isLogin ? 'Login' : 'SignUp'),
+      child: isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                  color: darkColorScheme.onBackground),
+            )
+          : Text(isLogin ? 'Login' : 'SignUp'),
     );
   }
 
@@ -177,14 +249,21 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(30.0),
         ),
       ),
-      child: Text(
-        isLogin
-            ? 'Non sei registrato? Registrati qui'
-            : 'Già registrato? Accedi qui',
-        style: GoogleFonts.poppins(
-          color: Colors.white,
-          fontSize: 14,
-          fontStyle: FontStyle.normal,
+      child: RichText(
+        text: TextSpan(
+          style: GoogleFonts.poppins(
+            color: darkColorScheme.onBackground,
+            fontSize: 14,
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: isLogin ? 'Non sei registrato? ' : 'Già registrato? ',
+            ),
+            TextSpan(
+              text: isLogin ? 'Registrati qui' : 'Accedi',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       ),
     );
@@ -200,42 +279,43 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
       child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Container(
-          height: double.infinity,
-          width: double.infinity,
-          margin: EdgeInsets.only(top: isLogin ? 150 : 100),
-          padding: const EdgeInsets.all(5),
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 90,
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Image.asset(
-                    'lib/icons/demiprof_full_logo.png',
+        resizeToAvoidBottomInset: false,
+        backgroundColor: darkColorScheme.background,
+        body: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(top: isLogin ? 150 : 90),
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 90,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Image.asset(
+                      'lib/icons/demiprof_full_logo.png',
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Column(
-                  children: <Widget>[
-                    isLogin ? _loginFields() : _signUpFields(),
-                    _errorMessage(),
-                    Container(
-                      margin: EdgeInsets.only(top: isLogin ? 20 : 60),
-                      child: Column(
-                        children: [
-                          _submitButton(),
-                          _loginOrRegisterButton(),
-                        ],
-                      ),
-                    )
-                  ],
+                Container(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: Column(
+                    children: <Widget>[
+                      isLogin ? _loginFields() : _signUpFields(),
+                      _errorMessage(),
+                      Container(
+                        margin: EdgeInsets.only(top: isLogin ? 20 : 60),
+                        child: Column(
+                          children: [
+                            _submitButton(),
+                            _loginOrRegisterButton(),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

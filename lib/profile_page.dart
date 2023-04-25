@@ -4,6 +4,38 @@ import 'package:demiprof_flutter_app/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+class rolesChoice extends StatefulWidget {
+  const rolesChoice({Key? key}) : super(key: key);
+
+  @override
+  State<rolesChoice> createState() => _rolesChoice();
+}
+
+class _rolesChoice extends State<rolesChoice> {
+  @override
+  Widget build(BuildContext context) {
+    int? _value = 1;
+    List<String> ruoli = ['Studente', 'Tutor'];
+    return Scaffold(
+      body: Wrap(
+        spacing: 5.0,
+        children: ruoli.map((ruolo) {
+          int index = ruoli.indexOf(ruolo);
+          return ChoiceChip(
+            label: Text(ruolo),
+            selected: _value == index,
+            onSelected: (bool selected) {
+              setState(() {
+                _value = selected ? index : null;
+              });
+            },
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
 
