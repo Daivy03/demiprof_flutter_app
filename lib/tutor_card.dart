@@ -105,114 +105,122 @@ class _TutorCardState extends State<TutorCard> {
     return Expanded(
       child: Container(
         height: 340,
-        child: ListView.builder(
-          itemBuilder: (context, index) {
-            int stars = Random().nextInt(5) +
-                1; // generates a random number between 1 and 5
-            return Column(
-              children: [
-                Container(
-                  height: 90,
-                  width: 500,
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(43, 34, 29, 1),
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: darkColorScheme.shadow,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        child: avatars.isEmpty
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                itemBuilder: (context, index) {
+                  int stars = Random().nextInt(5) +
+                      1; // generates a random number between 1 and 5
+                  return Column(
                     children: [
-                      Stack(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => BookPage()));
-                            },
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(15),
-                                topRight: Radius.circular(15),
-                              ),
-                              child: avatars[index],
+                      Container(
+                        height: 90,
+                        width: 500,
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 10,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(43, 34, 29, 1),
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: darkColorScheme.shadow,
                             ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 100, vertical: 10),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          names[index],
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color:
-                                                  darkColorScheme.onBackground),
-                                        ),
-                                        Text(" "), //spacing
-                                        FittedBox(
-                                          fit: BoxFit.scaleDown,
-                                          child: Text(
-                                            surnames[index],
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400,
-                                                color: darkColorScheme
-                                                    .onBackground),
-                                          ),
-                                        ),
-                                      ],
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => BookPage()));
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(15),
+                                      topRight: Radius.circular(15),
                                     ),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 0, vertical: 10),
-                                          child: Row(
-                                            children:
-                                                List.generate(stars, (index) {
-                                              return Icon(
-                                                Icons.star,
-                                                color: darkColorScheme
-                                                    .onTertiaryContainer,
-                                              );
-                                            }),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                    child: avatars[index],
+                                  ),
                                 ),
-                              ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 100, vertical: 10),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                names[index],
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: darkColorScheme
+                                                        .onBackground),
+                                              ),
+                                              Text(" "), //spacing
+                                              FittedBox(
+                                                fit: BoxFit.scaleDown,
+                                                child: Text(
+                                                  surnames[index],
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: darkColorScheme
+                                                          .onBackground),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 0,
+                                                    vertical: 10),
+                                                child: Row(
+                                                  children: List.generate(stars,
+                                                      (index) {
+                                                    return Icon(
+                                                      Icons.star,
+                                                      color: darkColorScheme
+                                                          .onTertiaryContainer,
+                                                    );
+                                                  }),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
+                          ],
+                        ),
                       ),
                     ],
-                  ),
-                ),
-              ],
-            );
-          },
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemCount: names.length,
-        ),
+                  );
+                },
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                itemCount: names.length,
+              ),
       ),
     );
   }

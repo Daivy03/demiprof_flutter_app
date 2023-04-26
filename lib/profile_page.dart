@@ -137,7 +137,7 @@ class SignInOptionsScreen extends StatelessWidget {
   }
 }
 
-class rolesChoice extends StatefulWidget {
+/* class rolesChoice extends StatefulWidget {
   const rolesChoice({Key? key}) : super(key: key);
 
   @override
@@ -167,7 +167,7 @@ class _rolesChoice extends State<rolesChoice> {
       ),
     );
   }
-}
+} */
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
@@ -223,32 +223,10 @@ class ProfilePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 30, left: 10, right: 10),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 20, left: 10, right: 10),
                       child: Row(
-                        children: [
-                          /* Container(
-                            margin: EdgeInsets.only(left: 15),
-                            height: 45,
-                            width: 45,
-                            decoration: BoxDecoration(
-                              color: darkColorScheme.primary,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: darkColorScheme.secondary,
-                                  blurRadius: 4,
-                                  spreadRadius: 1,
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.favorite_border_outlined,
-                              ),
-                            ),
-                          ), */
-                        ],
+                        children: [],
                       ),
                     ),
                     SizedBox(
@@ -317,10 +295,10 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 6,
                 ),
-                Container(
+                SizedBox(
                   height: 70,
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -330,9 +308,9 @@ class ProfilePage extends StatelessWidget {
                       return Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 10),
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 2),
                             decoration: BoxDecoration(
                               color: index == 1
@@ -358,10 +336,10 @@ class ProfilePage extends StatelessWidget {
                                           ? darkColorScheme.secondaryContainer
                                           : darkColorScheme.primary),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
-                                Text("DEC"),
+                                const Text("DEC"),
                               ],
                             ),
                           ),
@@ -370,10 +348,10 @@ class ProfilePage extends StatelessWidget {
                     },
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 6,
                 ),
-                Container(
+                SizedBox(
                   height: 70,
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -383,9 +361,9 @@ class ProfilePage extends StatelessWidget {
                       return Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 10),
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 2),
                             decoration: BoxDecoration(
                               color: index == 1
@@ -419,12 +397,12 @@ class ProfilePage extends StatelessWidget {
                     },
                   ),
                 ),
-                SizedBox(height: 130),
+                SizedBox(height: MediaQuery.of(context).size.aspectRatio),
                 Material(
                   color: darkColorScheme.primary,
                   borderRadius: BorderRadius.circular(35),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(
                       vertical: 1,
                     ),
                   ),
@@ -437,7 +415,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _title() {
+/*   Widget _title() {
     return RichText(
       text: TextSpan(
         style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
@@ -449,14 +427,6 @@ class ProfilePage extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-
-  /*  Widget _userUid() {
-    return Text(
-      user?.email ?? 'User email',
-      style: GoogleFonts.poppins(
-          fontSize: 15, color: darkColorScheme.onBackground),
     );
   } */
 
@@ -502,6 +472,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 45,
         title: _userUid(),
         actions: <Widget>[
           IconButton(
@@ -515,12 +486,12 @@ class ProfilePage extends StatelessWidget {
       ),
       backgroundColor: darkColorScheme.background,
       body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
+        //height: double.infinity,
+        //width: double.infinity,
+        padding: const EdgeInsets.all(2),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          //crossAxisAlignment: CrossAxisAlignment.center,
+          //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             userBook(context),
             //_signOutButton(),
