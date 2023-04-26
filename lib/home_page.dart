@@ -215,51 +215,55 @@ class _HomePageState extends State<HomePage> {
             Container(
               height: 100,
               margin: const EdgeInsets.only(left: 15),
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: materie.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 15),
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: darkColorScheme.secondaryContainer,
-                          shape: BoxShape.circle,
-                          boxShadow: const [
-                            BoxShadow(
-                              color: AppColors.backgrounda,
-                              blurRadius: 4,
-                              spreadRadius: 2,
+              child: materie.isEmpty
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: materie.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 15),
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: darkColorScheme.secondaryContainer,
+                                shape: BoxShape.circle,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: AppColors.backgrounda,
+                                    blurRadius: 4,
+                                    spreadRadius: 2,
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  materieIcons[index],
+                                  const SizedBox(height: 5),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child: Text(
+                                materie[index],
+                                style: GoogleFonts.roboto(
+                                  fontSize: 14,
+                                  color: darkColorScheme.onBackground,
+                                ),
+                              ),
                             ),
                           ],
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            materieIcons[index],
-                            const SizedBox(height: 5),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        child: Text(
-                          materie[index],
-                          style: GoogleFonts.roboto(
-                            fontSize: 14,
-                            color: darkColorScheme.onBackground,
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
+                        );
+                      },
+                    ),
             ),
             SizedBox(
               height: 10,

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.demiprof_flutter_app-mergeDebugResources-27:/values-it/values-it.xml",
+            "outputFile": "com.example.demiprof_flutter_app-mergeDebugResources-26:/values-it/values-it.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Reale\\.gradle\\caches\\transforms-3\\91fe2bec1e887c704cc6120aa38cfaef\\transformed\\jetified-play-services-base-18.0.1\\res\\values-it\\values.xml",

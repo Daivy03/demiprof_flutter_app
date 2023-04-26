@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.demiprof_flutter_app-mergeDebugResources-27:/values-nb/values-nb.xml",
+            "outputFile": "com.example.demiprof_flutter_app-mergeDebugResources-26:/values-nb/values-nb.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Reale\\.gradle\\caches\\transforms-3\\a8d5665db2dab5bb55b993127abcdbdc\\transformed\\browser-1.4.0\\res\\values-nb\\values-nb.xml",

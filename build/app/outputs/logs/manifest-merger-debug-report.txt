@@ -75,7 +75,6 @@ MERGED from [:cloud_firestore] C:\Users\Reale\Scuola\Framework Flutter\demiprof_
 MERGED from [:firebase_auth] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
 MERGED from [:firebase_storage] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
 MERGED from [:firebase_core] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
-MERGED from [:flutter_pdfview] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\flutter_pdfview\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:file_picker] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-19:12
 MERGED from [:image_picker_android] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-21:12
 MERGED from [:flutter_plugin_android_lifecycle] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
@@ -123,7 +122,6 @@ MERGED from [androidx.loader:loader:1.0.0] C:\Users\Reale\.gradle\caches\transfo
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] C:\Users\Reale\.gradle\caches\transforms-3\90be81502b9d99e592052f3b88c78abd\transformed\lifecycle-viewmodel-2.5.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] C:\Users\Reale\.gradle\caches\transforms-3\34eb494e0804ed0f11738db9e354ccb4\transformed\jetified-lifecycle-viewmodel-savedstate-2.5.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\Reale\.gradle\caches\transforms-3\2f632d8dec5aedcc344894ac2d746d3d\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:17:1-33:12
-MERGED from [com.github.mhiew:android-pdf-viewer:3.2.0-beta.3] C:\Users\Reale\.gradle\caches\transforms-3\da4bd014b45c482839995301cbdcb633\transformed\jetified-android-pdf-viewer-3.2.0-beta.3\AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.transition:transition:1.4.1] C:\Users\Reale\.gradle\caches\transforms-3\96470d4270e2c50d189e8ee98cad6073\transformed\transition-1.4.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.browser:browser:1.4.0] C:\Users\Reale\.gradle\caches\transforms-3\a8d5665db2dab5bb55b993127abcdbdc\transformed\browser-1.4.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat-resources:1.3.0] C:\Users\Reale\.gradle\caches\transforms-3\788680179217aac9e341b93a00ae4aa7\transformed\jetified-appcompat-resources-1.3.0\AndroidManifest.xml:17:1-24:12
@@ -149,7 +147,6 @@ MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\Reale\.gradle\cache
 MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\Reale\.gradle\caches\transforms-3\eb5c1acb3d5d4d2a56642e4ee2baa3a0\transformed\documentfile-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.print:print:1.0.0] C:\Users\Reale\.gradle\caches\transforms-3\4990585e3b4bead1422219a6d9df4092\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.annotation:annotation-experimental:1.3.0] C:\Users\Reale\.gradle\caches\transforms-3\6a885e1ca1213d74ca3cafdacbecf529\transformed\jetified-annotation-experimental-1.3.0\AndroidManifest.xml:17:1-22:12
-MERGED from [com.github.mhiew:pdfium-android:1.9.2] C:\Users\Reale\.gradle\caches\transforms-3\ac2a79a133f65703e69b6f643509240f\transformed\jetified-pdfium-android-1.9.2\AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.firebase:protolite-well-known-types:18.0.0] C:\Users\Reale\.gradle\caches\transforms-3\f081f04c75a546569b46fb097168a397\transformed\jetified-protolite-well-known-types-18.0.0\AndroidManifest.xml:2:1-11:12
 MERGED from [io.grpc:grpc-android:1.52.1] C:\Users\Reale\.gradle\caches\transforms-3\0eb0763a512d9da5d747c27afc78c432\transformed\jetified-grpc-android-1.52.1\AndroidManifest.xml:2:1-11:12
 INJECTED from C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\android\app\src\debug\AndroidManifest.xml:1:1-7:12
@@ -181,8 +178,6 @@ MERGED from [:firebase_storage] C:\Users\Reale\Scuola\Framework Flutter\demiprof
 MERGED from [:firebase_storage] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:firebase_core] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:firebase_core] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
-MERGED from [:flutter_pdfview] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\flutter_pdfview\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
-MERGED from [:flutter_pdfview] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\flutter_pdfview\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:file_picker] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:file_picker] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:image_picker_android] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
@@ -277,8 +272,6 @@ MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] C:\Users\R
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] C:\Users\Reale\.gradle\caches\transforms-3\34eb494e0804ed0f11738db9e354ccb4\transformed\jetified-lifecycle-viewmodel-savedstate-2.5.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\Reale\.gradle\caches\transforms-3\2f632d8dec5aedcc344894ac2d746d3d\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\Reale\.gradle\caches\transforms-3\2f632d8dec5aedcc344894ac2d746d3d\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41
-MERGED from [com.github.mhiew:android-pdf-viewer:3.2.0-beta.3] C:\Users\Reale\.gradle\caches\transforms-3\da4bd014b45c482839995301cbdcb633\transformed\jetified-android-pdf-viewer-3.2.0-beta.3\AndroidManifest.xml:5:5-7:41
-MERGED from [com.github.mhiew:android-pdf-viewer:3.2.0-beta.3] C:\Users\Reale\.gradle\caches\transforms-3\da4bd014b45c482839995301cbdcb633\transformed\jetified-android-pdf-viewer-3.2.0-beta.3\AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.transition:transition:1.4.1] C:\Users\Reale\.gradle\caches\transforms-3\96470d4270e2c50d189e8ee98cad6073\transformed\transition-1.4.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.transition:transition:1.4.1] C:\Users\Reale\.gradle\caches\transforms-3\96470d4270e2c50d189e8ee98cad6073\transformed\transition-1.4.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.browser:browser:1.4.0] C:\Users\Reale\.gradle\caches\transforms-3\a8d5665db2dab5bb55b993127abcdbdc\transformed\browser-1.4.0\AndroidManifest.xml:20:5-22:41
@@ -329,8 +322,6 @@ MERGED from [androidx.print:print:1.0.0] C:\Users\Reale\.gradle\caches\transform
 MERGED from [androidx.print:print:1.0.0] C:\Users\Reale\.gradle\caches\transforms-3\4990585e3b4bead1422219a6d9df4092\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.3.0] C:\Users\Reale\.gradle\caches\transforms-3\6a885e1ca1213d74ca3cafdacbecf529\transformed\jetified-annotation-experimental-1.3.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.3.0] C:\Users\Reale\.gradle\caches\transforms-3\6a885e1ca1213d74ca3cafdacbecf529\transformed\jetified-annotation-experimental-1.3.0\AndroidManifest.xml:20:5-44
-MERGED from [com.github.mhiew:pdfium-android:1.9.2] C:\Users\Reale\.gradle\caches\transforms-3\ac2a79a133f65703e69b6f643509240f\transformed\jetified-pdfium-android-1.9.2\AndroidManifest.xml:5:5-7:41
-MERGED from [com.github.mhiew:pdfium-android:1.9.2] C:\Users\Reale\.gradle\caches\transforms-3\ac2a79a133f65703e69b6f643509240f\transformed\jetified-pdfium-android-1.9.2\AndroidManifest.xml:5:5-7:41
 MERGED from [com.google.firebase:protolite-well-known-types:18.0.0] C:\Users\Reale\.gradle\caches\transforms-3\f081f04c75a546569b46fb097168a397\transformed\jetified-protolite-well-known-types-18.0.0\AndroidManifest.xml:7:5-9:41
 MERGED from [com.google.firebase:protolite-well-known-types:18.0.0] C:\Users\Reale\.gradle\caches\transforms-3\f081f04c75a546569b46fb097168a397\transformed\jetified-protolite-well-known-types-18.0.0\AndroidManifest.xml:7:5-9:41
 MERGED from [io.grpc:grpc-android:1.52.1] C:\Users\Reale\.gradle\caches\transforms-3\0eb0763a512d9da5d747c27afc78c432\transformed\jetified-grpc-android-1.52.1\AndroidManifest.xml:5:5-7:41
