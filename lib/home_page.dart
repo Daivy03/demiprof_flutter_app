@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:demiprof_flutter_app/custom_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'auth.dart';
 import 'package:demiprof_flutter_app/tutor_card.dart';
 
@@ -24,15 +25,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final List materie = [];
+  final List<String> materie = [];
+  late SharedPreferences _prefs;
 
-  void getMaterie() async {
+  Future<void> _loadMaterie() async {
     try {
-      QuerySnapshot snapshot = await firestore.collection('materie').get();
-      snapshot.docs.forEach((doc) {
-        String nome = (doc.data() as Map<String, dynamic>)['nome'];
-        materie.add(nome);
-      });
+      _prefs = await SharedPreferences.getInstance();
+      List<String>? materieList = _prefs.getStringList('materie');
+      if (materieList == null) {
+        QuerySnapshot snapshot = await firestore.collection('materie').get();
+        snapshot.docs.forEach((doc) {
+          String nome = (doc.data() as Map<String, dynamic>)['nome'];
+          materie.add(nome);
+        });
+        await _prefs.setStringList('materie', materie);
+      } else {
+        materie.addAll(materieList);
+      }
+      setState(() {});
     } catch (e) {
       print('Errore durante il recupero delle materie: $e');
     }
@@ -78,7 +88,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     getUserName();
-    getMaterie();
+    _loadMaterie();
   }
 
 //fetch username

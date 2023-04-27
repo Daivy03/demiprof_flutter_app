@@ -26,6 +26,23 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _controllerName = TextEditingController();
   final TextEditingController _controllerSurname = TextEditingController();
 
+  @override
+  void dispose() {
+    _controllerEmail.dispose();
+    _controllerPassword.dispose();
+    _controllerName.dispose();
+    _controllerSurname.dispose();
+    super.dispose();
+  }
+
+  void _updateErrorMessage(String message) {
+    if (mounted) {
+      setState(() {
+        errorMessage = message;
+      });
+    }
+  }
+
   Future<void> signInWithEmailAndPassword() async {
     try {
       await Auth().signInWithEmailAndPassword(
@@ -47,13 +64,9 @@ class _LoginPageState extends State<LoginPage> {
         surname: _controllerSurname.text,
         tutorId: "",
       );
-      // ignore: use_build_context_synchronously
-      showMessage(
-          context); //funzionante TODO: passare il toastMessage al navigator della homepage
+      showMessage(context);
     } on FirebaseAuthException catch (e) {
-      setState(() {
-        errorMessage = e.message;
-      });
+      _updateErrorMessage(e.message!); //verifica msg not null
     }
   }
 

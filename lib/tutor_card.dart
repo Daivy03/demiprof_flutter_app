@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/book_page.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
@@ -20,7 +21,7 @@ class _TutorCardState extends State<TutorCard> {
   List<String> surnames = [];
   List<int> stars = [];
   List<Widget> starIcons = [];
-  List<Image> avatars = [];
+  List<NetworkImage> avatars = [];
 
   @override
   void initState() {
@@ -73,17 +74,15 @@ class _TutorCardState extends State<TutorCard> {
       final FirebaseStorage storage = FirebaseStorage.instance;
       final Reference ref = storage.ref().child('avatar_images/');
       final ListResult result = await ref.listAll();
-      List<Image> avatarList = [];
+//List<NetworkImage> avatarList = []; // Change List<Image> to List<NetworkImage>
       for (final Reference imageRef in result.items) {
         final String url = await imageRef.getDownloadURL();
-        avatarList.add(Image.network(
+        avatars.add(NetworkImage(
           url,
-          height: 90,
-          width: 90,
         ));
       }
       setState(() {
-        avatars = avatarList;
+        avatars = avatars;
       });
     } catch (e) {
       print('Error fetching avatars: $e');
@@ -132,13 +131,27 @@ class _TutorCardState extends State<TutorCard> {
                                         MaterialPageRoute(
                                             builder: (context) => BookPage()));
                                   },
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(15),
-                                      topRight: Radius.circular(15),
-                                    ),
-                                    child: avatars[index],
-                                  ),
+                                  child: avatars.length > index
+                                      ? ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(15),
+                                            topRight: Radius.circular(15),
+                                          ),
+                                          child: CachedNetworkImage(
+                                            imageUrl: avatars[index].url,
+                                            height: 90,
+                                            width: 90,
+                                            placeholder: (context, url) =>
+                                                const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
                                 ),
                                 Container(
                                   padding: const EdgeInsets.symmetric(

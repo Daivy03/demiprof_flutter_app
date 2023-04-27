@@ -83,6 +83,7 @@ MERGED from [:path_provider_android] C:\Users\Reale\Scuola\Framework Flutter\dem
 MERGED from [:dynamic_color] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\dynamic_color\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:flutter_native_splash] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\flutter_native_splash\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:image_cropper] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\image_cropper\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:shared_preferences_android] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:permission_handler_android] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\permission_handler_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:fluttertoast] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\fluttertoast\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.multidex:multidex:2.0.1] C:\Users\Reale\.gradle\caches\transforms-3\e2ff69f535974034e620c3e219e20170\transformed\multidex-2.0.1\AndroidManifest.xml:17:1-22:12
@@ -194,6 +195,8 @@ MERGED from [:flutter_native_splash] C:\Users\Reale\Scuola\Framework Flutter\dem
 MERGED from [:flutter_native_splash] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\flutter_native_splash\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:image_cropper] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\image_cropper\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:image_cropper] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\image_cropper\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:shared_preferences_android] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:shared_preferences_android] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:permission_handler_android] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\permission_handler_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:permission_handler_android] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\permission_handler_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:fluttertoast] C:\Users\Reale\Scuola\Framework Flutter\demiprof_flutter_app\build\fluttertoast\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
