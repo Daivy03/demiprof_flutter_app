@@ -3,18 +3,9 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/book_page.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
-import 'package:dynamic_color/samples.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:demiprof_flutter_app/custom_colors.dart';
-import 'package:demiprof_flutter_app/profile_page.dart';
-import 'package:demiprof_flutter_app/route_generator.dart';
-import 'package:demiprof_flutter_app/search_page.dart';
-import 'auth.dart';
-import 'package:demiprof_flutter_app/widgets/currentLoggedUser.dart';
 
 class TutorCard extends StatefulWidget {
   const TutorCard({Key? key}) : super(key: key);
@@ -57,14 +48,13 @@ class _TutorCardState extends State<TutorCard> {
 
   Future<void> getStars() async {
     try {
-      QuerySnapshot snapshot = await firestore.collection('users').get();
+      QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection('users').get();
       setState(() {
         List<int> starsList =
             snapshot.docs.map((doc) => doc['stars'] as int).toList();
         stars = starsList;
         starIcons = List.generate(starsList.length, (_) => Icon(Icons.star));
-        names = starsList.map((_) => '').toList();
-        surnames = starsList.map((_) => '').toList();
       });
       for (int i = 0; i < snapshot.docs.length; i++) {
         String name = snapshot.docs[i]['name'] as String;
@@ -103,7 +93,7 @@ class _TutorCardState extends State<TutorCard> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Container(
+      child: SizedBox(
         height: 340,
         child: avatars.isEmpty
             ? const Center(
@@ -151,7 +141,7 @@ class _TutorCardState extends State<TutorCard> {
                                   ),
                                 ),
                                 Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 100, vertical: 10),
                                   child: Align(
                                     alignment: Alignment.centerLeft,

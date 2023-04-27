@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BookPage extends StatefulWidget {
@@ -83,7 +82,8 @@ class _BookPageState extends State<BookPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 30, left: 10, right: 10),
+                        padding:
+                            const EdgeInsets.only(top: 30, left: 10, right: 10),
                         child: Row(
                           children: [
                             InkWell(
@@ -91,7 +91,7 @@ class _BookPageState extends State<BookPage> {
                                 Navigator.of(context).pop();
                               },
                               child: Container(
-                                margin: EdgeInsets.all(8),
+                                margin: const EdgeInsets.all(8),
                                 height: 45,
                                 width: 45,
                                 decoration: BoxDecoration(
@@ -152,7 +152,7 @@ class _BookPageState extends State<BookPage> {
                                     color: darkColorScheme.onSurface,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 8,
                                 ),
                                 //text
@@ -181,7 +181,7 @@ class _BookPageState extends State<BookPage> {
                                     color: darkColorScheme.onSurface,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 8,
                                 ),
                                 //text
@@ -206,7 +206,7 @@ class _BookPageState extends State<BookPage> {
                                     color: darkColorScheme.onSurface,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 8,
                                 ),
                                 //text
@@ -229,13 +229,13 @@ class _BookPageState extends State<BookPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -247,7 +247,7 @@ class _BookPageState extends State<BookPage> {
                                   Icons.event_available_rounded,
                                   color: darkColorScheme.onSecondaryContainer,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Text(
@@ -264,7 +264,7 @@ class _BookPageState extends State<BookPage> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 6,
                   ),
                   Container(
@@ -277,9 +277,9 @@ class _BookPageState extends State<BookPage> {
                         return Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.symmetric(
+                              margin: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 10),
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 2),
                               decoration: BoxDecoration(
                                 color: index == 1
@@ -305,10 +305,10 @@ class _BookPageState extends State<BookPage> {
                                             ? darkColorScheme.secondaryContainer
                                             : darkColorScheme.primary),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 5,
                                   ),
-                                  Text("DEC"),
+                                  const Text("DEC"),
                                 ],
                               ),
                             ),
@@ -327,7 +327,7 @@ class _BookPageState extends State<BookPage> {
                               Icons.access_time_filled,
                               color: darkColorScheme.onSecondaryContainer,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Text(
@@ -341,7 +341,7 @@ class _BookPageState extends State<BookPage> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 6,
                   ),
                   Container(
@@ -354,9 +354,9 @@ class _BookPageState extends State<BookPage> {
                         return Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.symmetric(
+                              margin: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 10),
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 2),
                               decoration: BoxDecoration(
                                 color: index == 1
@@ -390,7 +390,7 @@ class _BookPageState extends State<BookPage> {
                       },
                     ),
                   ),
-                  SizedBox(height: 130),
+                  const SizedBox(height: 130),
                   Material(
                     color: darkColorScheme.primary,
                     borderRadius: BorderRadius.circular(35),
@@ -420,19 +420,19 @@ class _BookPageState extends State<BookPage> {
                             ),
                           ),
                         ),
-                        Positioned.fill(
+                        const Positioned.fill(
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: SizedBox(
                               height: 48.0, // spazio vuoto per la SnackBar
-                              child: const SizedBox(),
+                              child: SizedBox(),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                 ],
               ),
             ],

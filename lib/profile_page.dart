@@ -1,10 +1,7 @@
-import 'package:demiprof_flutter_app/book_page.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
 import 'package:demiprof_flutter_app/custom_colors.dart';
 import 'package:demiprof_flutter_app/home_page.dart';
 import 'package:demiprof_flutter_app/user_settingpage.dart';
-import 'package:demiprof_flutter_app/widgets/currentLoggedUser.dart';
-import 'package:demiprof_flutter_app/widgets/modal_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:demiprof_flutter_app/auth.dart';
 import 'package:flutter/material.dart';

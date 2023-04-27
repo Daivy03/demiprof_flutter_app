@@ -23,8 +23,6 @@ Future<String> getSelectedRole() async {
 class _RolesState extends State<Roles> {
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
-
     return Align(
       alignment: Alignment.center,
       child: Column(

@@ -1,9 +1,5 @@
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
-import 'package:demiprof_flutter_app/filters_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:demiprof_flutter_app/custom_colors.dart';
-import 'package:demiprof_flutter_app/profile_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ContestTabHeader extends SliverPersistentHeaderDelegate {

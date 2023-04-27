@@ -1,16 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:demiprof_flutter_app/book_page.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
 import 'package:demiprof_flutter_app/filters_screen.dart';
 import 'package:demiprof_flutter_app/home_page.dart';
 import 'package:demiprof_flutter_app/profile_page.dart';
-import 'package:demiprof_flutter_app/search_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'auth.dart';
-import 'package:demiprof_flutter_app/widgets/currentLoggedUser.dart';
 import 'custom_colors.dart';
 
 class MobileLayout extends StatefulWidget {

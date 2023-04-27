@@ -182,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     flex: 1,
                     child: Padding(
-                      padding: EdgeInsets.only(right: 15),
+                      padding: const EdgeInsets.only(right: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.end,

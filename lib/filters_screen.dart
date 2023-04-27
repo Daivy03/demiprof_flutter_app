@@ -6,9 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'range_slider_view.dart';
-import 'slider_view.dart';
-import 'color_schemes.g.dart';
 
 class FiltersScreen extends StatefulWidget {
   @override
@@ -24,7 +21,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
   List<PopularFilterListData> accomodationListData = accomodationList;
 
   final TextEditingController _searchController = TextEditingController();
-  List<QueryDocumentSnapshot> _searchResults = [];
 
   @override
   Widget build(BuildContext context) {
@@ -115,9 +111,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                     controller: _searchController,
                     onChanged: (value) {
                       searchUsers(value).then((results) {
-                        setState(() {
-                          _searchResults = results;
-                        });
+                        setState(() {});
                       });
                     },
                     style: const TextStyle(
@@ -195,9 +189,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
                 const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
             child: Row(
               children: <Widget>[
-                Expanded(
+                const Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       '530 hotels found',
                       style: TextStyle(
@@ -284,7 +278,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   Expanded(
                     child: Text(
                       date.titleTxt,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     ),
                   ),
                   CupertinoSwitch(

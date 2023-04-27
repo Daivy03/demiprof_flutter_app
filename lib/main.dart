@@ -7,8 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:demiprof_flutter_app/custom_colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'home_page.dart';
-
 /*
 Main.dart
 Determina la struttura e dettagli che app deve usare
