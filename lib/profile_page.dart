@@ -81,6 +81,30 @@ class SignInOptionsScreen extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
+                // TODO: Gestire l'azione per il manuale utente
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                child: Row(
+                  children: [
+                    Icon(
+                      MdiIcons.bookAccount,
+                      size: 25,
+                      color: darkColorScheme.onBackground,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Manuale Utente",
+                        style: GoogleFonts.montserrat(
+                            color: darkColorScheme.onBackground))
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
                 // TODO: Gestire l'azione per le info app
               },
               child: Container(
@@ -106,6 +130,7 @@ class SignInOptionsScreen extends StatelessWidget {
             InkWell(
               onTap: () {
                 signOut();
+                Navigator.pop(context);
               },
               child: Container(
                 margin: EdgeInsets.only(top: 10),
@@ -412,21 +437,6 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-/*   Widget _title() {
-    return RichText(
-      text: TextSpan(
-        style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
-        children: const [
-          TextSpan(text: "DEMI"),
-          TextSpan(
-            text: "PROF",
-            style: TextStyle(color: AppColors.accent),
-          )
-        ],
-      ),
-    );
-  } */
-
   Widget _signOutButton() {
     return ElevatedButton(
       style: ButtonStyle(
@@ -480,6 +490,12 @@ class ProfilePage extends StatelessWidget {
             },
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          //TODO: Add onPressed code here!
+        },
+        child: const Icon(Icons.add),
       ),
       backgroundColor: darkColorScheme.background,
       body: Container(
