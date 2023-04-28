@@ -23,6 +23,7 @@ class Auth {
     required String password,
     required String name,
     required String surname,
+    required Timestamp days,
   }) async {
     UserCredential cred = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
@@ -42,6 +43,7 @@ class Auth {
       classe: "",
       materie: [],
       stars: 0,
+      days: days = Timestamp(0, 0),
     );
     await _firestore
         .collection("users")

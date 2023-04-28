@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User {
   final String email;
   final String tutorId;
@@ -7,6 +9,7 @@ class User {
   final String classe;
   final List<String> materie;
   final int stars;
+  final Timestamp days;
 
   const User({
     required this.email,
@@ -17,6 +20,7 @@ class User {
     required this.classe,
     required this.materie,
     required this.stars,
+    required this.days,
   });
 
   Map<String, dynamic> toJson() => {
@@ -28,5 +32,6 @@ class User {
         "classe": classe,
         "materie": materie,
         "stars": stars,
+        "days": days,
       };
 }

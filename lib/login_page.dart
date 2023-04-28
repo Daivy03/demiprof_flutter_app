@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
 import 'package:demiprof_flutter_app/custom_colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -56,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> createUserWithEmailAndPassword() async {
+    Timestamp days = Timestamp(0, 0);
     try {
       await Auth().createUserWithEmailAndPassword(
         email: _controllerEmail.text,
@@ -63,6 +65,7 @@ class _LoginPageState extends State<LoginPage> {
         name: _controllerName.text,
         surname: _controllerSurname.text,
         tutorId: "",
+        days: days = Timestamp(0, 0),
       );
       showMessage(context);
     } on FirebaseAuthException catch (e) {

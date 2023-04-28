@@ -3,10 +3,12 @@ import 'package:demiprof_flutter_app/custom_colors.dart';
 import 'package:demiprof_flutter_app/home_page.dart';
 import 'package:demiprof_flutter_app/user_settingpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:intl/intl.dart';
 
 class SignInOptionsScreen extends StatelessWidget {
   const SignInOptionsScreen({Key? key}) : super(key: key);
@@ -191,8 +193,26 @@ class _rolesChoice extends State<rolesChoice> {
   }
 } */
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   ProfilePage({Key? key}) : super(key: key);
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  bool isTutor = false;
+  bool daysTapped = false;
+  String _tutorId = "";
+  TextEditingController _controllerDate = TextEditingController();
+  Timestamp convDate = Timestamp(0, 0);
+  String formattedDate = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getTutorId();
+  }
 
   final User? user = Auth().currentUser;
 
@@ -475,6 +495,79 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  //recupero dati utente per indetificarne ruolo
+  void getTutorId() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    _tutorId = (snap.data() as Map<String, dynamic>)['tutorId'];
+    setState(() {
+      _tutorId = (snap.data() as Map<String, dynamic>)['tutorId'];
+    });
+  }
+
+  void updateText() {}
+  String upTextLabel = 'Inserisci giorno disponibile';
+
+  Widget calendar() {
+    return Scaffold(
+      appBar: AppBar(
+          title: Text("Modifica disponibilità"),
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back),
+          )),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        alignment: Alignment.topCenter,
+        child: Center(
+          child: TextField(
+              controller:
+                  _controllerDate, //editing controller of this TextField
+              decoration: InputDecoration(
+                icon: Icon(Icons.calendar_today), //icon of text field
+                labelText: "Inserisci giorno disponibile", //label text of field
+              ),
+              readOnly: true, // when true user cannot edit text
+              onTap: () async {
+                createSubmitDays();
+                updateText();
+              }),
+        ),
+      ),
+    );
+  }
+
+  void createSubmitDays() async {
+    DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(), //get today's date
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2025));
+    convDate = Timestamp.fromDate(pickedDate!);
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final String userId = user!.uid;
+
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    final DocumentReference userDocRef = usersCollection.doc(userId);
+
+    try {
+      await userDocRef.update({'days': convDate});
+      print('Campo "days" aggiornato con successo per l\'utente $userId');
+    } catch (e) {
+      print(
+          'Si è verificato un errore durante l\'aggiornamento del campo "days" per l\'utente $userId: $e');
+    }
+
+    formattedDate = DateFormat('dd/MM/yyyy').format(convDate.toDate());
+    _controllerDate.text = formattedDate;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -491,12 +584,15 @@ class ProfilePage extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //TODO: Add onPressed code here!
-        },
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: _tutorId.isEmpty
+          ? const SizedBox()
+          : FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => calendar()));
+              },
+              child: const Icon(Icons.add),
+            ),
       backgroundColor: darkColorScheme.background,
       body: Container(
         //height: double.infinity,
