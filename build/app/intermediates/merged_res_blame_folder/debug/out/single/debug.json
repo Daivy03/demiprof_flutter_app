@@ -1,23 +1,59 @@
 [
     {
-        "merged": "com.example.demiprof_flutter_app-merged_res-28:/mipmap-mdpi_ic_launcher.png.flat",
-        "source": "com.example.demiprof_flutter_app-main-21:/mipmap-mdpi/ic_launcher.png"
+        "merged": "com.example.demiprof_flutter_app-merged_res-28:/drawable_background.png.flat",
+        "source": "com.example.demiprof_flutter_app-main-21:/drawable/background.png"
     },
     {
         "merged": "com.example.demiprof_flutter_app-merged_res-28:/mipmap-xxxhdpi_ic_launcher.png.flat",
         "source": "com.example.demiprof_flutter_app-main-21:/mipmap-xxxhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.example.demiprof_flutter_app-merged_res-28:/drawable-v21_launch_background.xml.flat",
-        "source": "com.example.demiprof_flutter_app-main-21:/drawable-v21/launch_background.xml"
+        "merged": "com.example.demiprof_flutter_app-merged_res-28:/drawable-night-mdpi_splash.png.flat",
+        "source": "com.example.demiprof_flutter_app-main-21:/drawable-night-mdpi/splash.png"
     },
     {
-        "merged": "com.example.demiprof_flutter_app-merged_res-28:/mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "com.example.demiprof_flutter_app-main-21:/mipmap-xxhdpi/ic_launcher.png"
+        "merged": "com.example.demiprof_flutter_app-merged_res-28:/drawable-night-hdpi_splash.png.flat",
+        "source": "com.example.demiprof_flutter_app-main-21:/drawable-night-hdpi/splash.png"
+    },
+    {
+        "merged": "com.example.demiprof_flutter_app-merged_res-28:/drawable-night-xhdpi_splash.png.flat",
+        "source": "com.example.demiprof_flutter_app-main-21:/drawable-night-xhdpi/splash.png"
     },
     {
         "merged": "com.example.demiprof_flutter_app-merged_res-28:/mipmap-hdpi_ic_launcher.png.flat",
         "source": "com.example.demiprof_flutter_app-main-21:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.demiprof_flutter_app-merged_res-28:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.example.demiprof_flutter_app-main-21:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.demiprof_flutter_app-merged_res-28:/drawable-night_launch_background.xml.flat",
+        "source": "com.example.demiprof_flutter_app-main-21:/drawable-night/launch_background.xml"
+    },
+    {
+        "merged": "com.example.demiprof_flutter_app-merged_res-28:/drawable-night-xxxhdpi_splash.png.flat",
+        "source": "com.example.demiprof_flutter_app-main-21:/drawable-night-xxxhdpi/splash.png"
+    },
+    {
+        "merged": "com.example.demiprof_flutter_app-merged_res-28:/drawable-night-xxhdpi_splash.png.flat",
+        "source": "com.example.demiprof_flutter_app-main-21:/drawable-night-xxhdpi/splash.png"
+    },
+    {
+        "merged": "com.example.demiprof_flutter_app-merged_res-28:/drawable-night-v21_launch_background.xml.flat",
+        "source": "com.example.demiprof_flutter_app-main-21:/drawable-night-v21/launch_background.xml"
+    },
+    {
+        "merged": "com.example.demiprof_flutter_app-merged_res-28:/drawable-v21_launch_background.xml.flat",
+        "source": "com.example.demiprof_flutter_app-main-21:/drawable-v21/launch_background.xml"
+    },
+    {
+        "merged": "com.example.demiprof_flutter_app-merged_res-28:/drawable-v21_background.png.flat",
+        "source": "com.example.demiprof_flutter_app-main-21:/drawable-v21/background.png"
+    },
+    {
+        "merged": "com.example.demiprof_flutter_app-merged_res-28:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.example.demiprof_flutter_app-main-21:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
         "merged": "com.example.demiprof_flutter_app-merged_res-28:/mipmap-xhdpi_ic_launcher.png.flat",

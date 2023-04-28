@@ -9,7 +9,7 @@ class User {
   final String classe;
   final List<String> materie;
   final int stars;
-  final Timestamp days;
+  final List<Timestamp> days;
 
   const User({
     required this.email,

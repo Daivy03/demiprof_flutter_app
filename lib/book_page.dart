@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class BookPage extends StatefulWidget {
   const BookPage({super.key});
@@ -11,6 +13,14 @@ class BookPage extends StatefulWidget {
 }
 
 class _BookPageState extends State<BookPage> {
+  @override
+  void initState() {
+    super.initState();
+    fetchDays();
+  }
+
+  List<Timestamp> _days = [];
+
   Future<void> createNewBook(DateTime day, String materia, String tutorId,
       String userIdRequest) async {
     try {
@@ -34,7 +44,27 @@ class _BookPageState extends State<BookPage> {
     }
   }
 
+  Future<void> fetchDays() async {
+    final FirebaseAuth _firebase = FirebaseAuth.instance;
+    final User? user = _firebase.currentUser;
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    final DocumentReference userDocRef = usersCollection.doc(user!.uid);
+
+    try {
+      DocumentSnapshot userDocSnapshot = await userDocRef.get();
+      List<Timestamp> days = List.from(userDocSnapshot.get('days'));
+      setState(() {
+        _days = days;
+      });
+    } catch (e) {
+      print(
+          'Si è verificato un errore durante il recupero del campo "days" per l\'utente corrente: $e');
+    }
+  }
+
   bool _showSnackBar = false;
+  DateTime? selectedDate;
 
   @override
   Widget build(BuildContext context) {
@@ -111,27 +141,6 @@ class _BookPageState extends State<BookPage> {
                                 ),
                               ),
                             ),
-                            /* Container(
-                              margin: EdgeInsets.only(left: 15),
-                              height: 45,
-                              width: 45,
-                              decoration: BoxDecoration(
-                                color: darkColorScheme.primary,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: darkColorScheme.secondary,
-                                    blurRadius: 4,
-                                    spreadRadius: 1,
-                                  ),
-                                ],
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.favorite_border_outlined,
-                                ),
-                              ),
-                            ), */
                           ],
                         ),
                       ),
@@ -174,7 +183,8 @@ class _BookPageState extends State<BookPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Davide Reale',
+                                  'Nome Cognome',
+                                  //TODO: pass name from previous page
                                   style: GoogleFonts.montserrat(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -189,6 +199,7 @@ class _BookPageState extends State<BookPage> {
                                   children: [
                                     Text(
                                       'Classe',
+                                      //TODO:pass classe from previous page
                                       style: GoogleFonts.poppins(fontSize: 16),
                                     )
                                   ],
@@ -213,6 +224,7 @@ class _BookPageState extends State<BookPage> {
                                 Column(
                                   children: [
                                     Text(
+                                      //pass borndate from previous page
                                       '2001',
                                       style: GoogleFonts.poppins(
                                         fontSize: 14,
@@ -272,44 +284,66 @@ class _BookPageState extends State<BookPage> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: 6,
+                      itemCount: _days.length,
                       itemBuilder: (context, index) {
+                        DateTime date = _days[index].toDate();
+                        bool isSelected =
+                            selectedDate != null && date == selectedDate!;
                         return Column(
                           children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 10),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: index == 1
-                                    ? darkColorScheme.tertiary
-                                    : darkColorScheme.onSecondary,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: darkColorScheme.primary,
-                                    blurRadius: 1,
-                                    spreadRadius: 0,
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  //TODO: caricare giorni disponibili dal db
-                                  Text(
-                                    "${index + 8}",
-                                    style: GoogleFonts.poppins(
-                                        color: index == 1
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  selectedDate = date;
+                                });
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 10,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? darkColorScheme.tertiary
+                                      : darkColorScheme.onSecondary,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: darkColorScheme.primary,
+                                      blurRadius: 1,
+                                      spreadRadius: 0,
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${date.day}",
+                                      style: GoogleFonts.poppins(
+                                        color: isSelected
                                             ? darkColorScheme.secondaryContainer
-                                            : darkColorScheme.primary),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  const Text("DEC"),
-                                ],
+                                            : darkColorScheme.primary,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      DateFormat('MMM').format(date),
+                                      style: GoogleFonts.poppins(
+                                        color: isSelected
+                                            ? darkColorScheme.secondaryContainer
+                                            : darkColorScheme.primary,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -331,6 +365,7 @@ class _BookPageState extends State<BookPage> {
                               width: 10,
                             ),
                             Text(
+                              //TODO:fetch hours from db
                               'Orari disponibili',
                               style: GoogleFonts.poppins(
                                   fontSize: 19,

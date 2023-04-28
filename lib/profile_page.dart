@@ -547,7 +547,8 @@ class _ProfilePageState extends State<ProfilePage> {
         initialDate: DateTime.now(), //get today's date
         firstDate: DateTime.now(),
         lastDate: DateTime(2025));
-    convDate = Timestamp.fromDate(pickedDate!);
+    Timestamp convDate = Timestamp.fromDate(pickedDate!);
+
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final String userId = user!.uid;
@@ -557,7 +558,10 @@ class _ProfilePageState extends State<ProfilePage> {
     final DocumentReference userDocRef = usersCollection.doc(userId);
 
     try {
-      await userDocRef.update({'days': convDate});
+      DocumentSnapshot userDocSnapshot = await userDocRef.get();
+      List<Timestamp> days = List.from(userDocSnapshot.get('days'));
+      days.add(convDate);
+      await userDocRef.update({'days': days});
       print('Campo "days" aggiornato con successo per l\'utente $userId');
     } catch (e) {
       print(

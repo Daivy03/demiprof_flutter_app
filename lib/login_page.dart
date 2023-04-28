@@ -57,7 +57,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> createUserWithEmailAndPassword() async {
-    Timestamp days = Timestamp(0, 0);
+    List<Timestamp> days = [];
+    List<String> materie = [];
     try {
       await Auth().createUserWithEmailAndPassword(
         email: _controllerEmail.text,
@@ -65,7 +66,8 @@ class _LoginPageState extends State<LoginPage> {
         name: _controllerName.text,
         surname: _controllerSurname.text,
         tutorId: "",
-        days: days = Timestamp(0, 0),
+        materie: materie,
+        days: days,
       );
       showMessage(context);
     } on FirebaseAuthException catch (e) {

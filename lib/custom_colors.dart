@@ -7,5 +7,5 @@ class AppColors {
   static const Color foreground = Color(0xFF52443d);
   static const Color tertiary = Color(0xFFcec991);
   static const Color backgrounda = Color(0xFF201a17);
-  static const Color backgroundVariant = Color.fromARGB(255, 51, 35, 27);
+  static const Color backgroundVariant = Color(0xFF33231B);
 }
