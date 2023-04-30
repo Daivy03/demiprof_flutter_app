@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:demiprof_flutter_app/custom_colors.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 /*
 Main.dart
@@ -26,6 +28,7 @@ class DemiProf extends StatefulWidget {
 }
 
 class _DemiProfState extends State<DemiProf> {
+  //static const Locale itLocale = Locale('it', 'IT');
   final ThemeData _themeData = ThemeData(
     useMaterial3: true,
     colorScheme: darkColorScheme,

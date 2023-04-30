@@ -9,9 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class SignInOptionsScreen extends StatelessWidget {
   const SignInOptionsScreen({Key? key}) : super(key: key);
+  final Locale itLocale = const Locale('it', 'IT');
 
   @override
   Widget build(BuildContext context) {
@@ -207,6 +209,7 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController _controllerDate = TextEditingController();
   Timestamp convDate = Timestamp(0, 0);
   String formattedDate = '';
+  static const Locale itLocale = const Locale('it', 'IT');
 
   @override
   void initState() {
@@ -474,25 +477,28 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _showModalBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-        top: Radius.circular(30),
-      )),
-      builder: (context) => DraggableScrollableSheet(
-          initialChildSize: 0.4,
-          maxChildSize: 0.9,
-          minChildSize: 0.32,
-          expand: false,
-          builder: (context, scrollController) {
-            return SingleChildScrollView(
-              controller: scrollController,
-              child: const SignInOptionsScreen(),
-            );
-          }),
-    );
+    if (mounted) {
+      // controlla se il widget è ancora montato
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+          top: Radius.circular(30),
+        )),
+        builder: (context) => DraggableScrollableSheet(
+            initialChildSize: 0.4,
+            maxChildSize: 0.9,
+            minChildSize: 0.32,
+            expand: false,
+            builder: (context, scrollController) {
+              return SingleChildScrollView(
+                controller: scrollController,
+                child: const SignInOptionsScreen(),
+              );
+            }),
+      );
+    }
   }
 
   //recupero dati utente per indetificarne ruolo
@@ -542,12 +548,39 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void createSubmitDays() async {
-    DateTime? pickedDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(), //get today's date
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2025));
-    Timestamp convDate = Timestamp.fromDate(pickedDate!);
+    await initializeDateFormatting('it_IT');
+
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2025),
+    );
+
+    if (pickedDate == null) {
+      return;
+    }
+
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (pickedTime == null) {
+      return;
+    }
+
+    final DateTime combinedDateTime = DateTime(
+      pickedDate.year,
+      pickedDate.month,
+      pickedDate.day,
+      pickedTime.hour,
+      pickedTime.minute,
+    );
+
+    final DateFormat formatter = DateFormat('dd/MM/yyyy HH:mm:ss', 'it_IT');
+    final String formattedDate = formatter.format(combinedDateTime);
+    final Timestamp convDate = Timestamp.fromDate(combinedDateTime);
 
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
@@ -558,18 +591,52 @@ class _ProfilePageState extends State<ProfilePage> {
     final DocumentReference userDocRef = usersCollection.doc(userId);
 
     try {
-      DocumentSnapshot userDocSnapshot = await userDocRef.get();
-      List<Timestamp> days = List.from(userDocSnapshot.get('days'));
+      final DocumentSnapshot userDocSnapshot = await userDocRef.get();
+      final List<Timestamp> days = List.from(userDocSnapshot.get('days'));
       days.add(convDate);
       await userDocRef.update({'days': days});
       print('Campo "days" aggiornato con successo per l\'utente $userId');
+
+      if (mounted) {
+        await _showConfirmationDialog(
+          context,
+          combinedDateTime,
+        );
+      }
     } catch (e) {
       print(
           'Si è verificato un errore durante l\'aggiornamento del campo "days" per l\'utente $userId: $e');
     }
 
-    formattedDate = DateFormat('dd/MM/yyyy').format(convDate.toDate());
     _controllerDate.text = formattedDate;
+  }
+
+  Future<void> _showConfirmationDialog(
+      BuildContext context, DateTime dateTime) async {
+    final DateFormat formatter = DateFormat(
+        'dd/MM/yyyy HH:mm', 'it_IT'); // imposta il formato di data e ora
+    final String formattedDate =
+        formatter.format(dateTime); // crea la stringa di data e ora formattata
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Giorno inserito'),
+          content: Text('Il giorno e l\'ora: $formattedDate'
+              ' sono stati inseriti correttamente'), // visualizza la stringa di data e ora
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                //Navigator.of(context).pop();
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override

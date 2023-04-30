@@ -27,7 +27,7 @@ class _TutorCardState extends State<TutorCard> {
   void initState() {
     super.initState();
     getUsers();
-    getStars();
+    //getStars();
     getAvatars();
   }
 
@@ -47,7 +47,7 @@ class _TutorCardState extends State<TutorCard> {
     }
   }
 
-  Future<void> getStars() async {
+/*   Future<void> getStars() async {
     try {
       QuerySnapshot snapshot =
           await FirebaseFirestore.instance.collection('users').get();
@@ -67,7 +67,7 @@ class _TutorCardState extends State<TutorCard> {
     } catch (e) {
       print('Error fetching stars: $e');
     }
-  }
+  } */
 
   Future<void> getAvatars() async {
     try {
