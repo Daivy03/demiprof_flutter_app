@@ -14,20 +14,25 @@ class BookSuccess extends StatefulWidget {
 class _BookSuccessState extends State<BookSuccess> {
   @override
   Widget build(BuildContext context) {
-    return Material(
-      /* appBar: AppBar(
-        title: Text("Conferma prenotazione"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Prenotazione confermata"),
         elevation: 1,
         backgroundColor: darkColorScheme.background,
-        leading: Container(
-          child: Icon(Icons.arrow_back_rounded),
-          width: 10,
-          height: 10,
-          margin: EdgeInsets.symmetric(horizontal: 5),
-          padding: const EdgeInsets.only(left: 12),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+          child: Container(
+            child: Icon(Icons.arrow_back_rounded),
+            width: 10,
+            height: 10,
+            margin: EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.only(left: 12),
+          ),
         ),
-      ), */
-      child: SingleChildScrollView(
+      ),
+      body: SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

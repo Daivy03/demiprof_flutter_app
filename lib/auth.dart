@@ -35,7 +35,7 @@ class Auth {
       tutorId = cred.user!.uid;
     }
 
-    model.User _tutor = model.User(
+    model.UserDataApp _tutor = model.UserDataApp(
       email: email,
       tutorId: tutorId,
       name: name,

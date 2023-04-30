@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/book_success.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
+import 'package:demiprof_flutter_app/models/user_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +9,12 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 class BookPage extends StatefulWidget {
-  const BookPage({super.key});
+  final UserDataApp usersDataApp;
+
+  BookPage({
+    super.key,
+    required this.usersDataApp,
+  });
 
   @override
   State<BookPage> createState() => _BookPageState();
@@ -19,7 +25,25 @@ class _BookPageState extends State<BookPage> {
   void initState() {
     super.initState();
     italianDates();
+    loadStars();
     fetchDays();
+  }
+
+  void loadStars() {
+    // Aggiungi icone stellate intere
+    for (int i = 0; i < widget.usersDataApp.stars; i++) {
+      starIcons.add(Icon(Icons.star));
+    }
+
+// Aggiungi icona stellata a metà
+    if (widget.usersDataApp.stars % 1 != 0) {
+      starIcons.add(Icon(Icons.star_half));
+    }
+
+// Aggiungi icone stellate vuote
+    while (starIcons.length < 5) {
+      starIcons.add(Icon(Icons.star_border_outlined));
+    }
   }
 
   void italianDates() async {
@@ -50,7 +74,7 @@ class _BookPageState extends State<BookPage> {
       await newDocRef.set({
         'day': Timestamp.fromDate(day),
         'materia': materia,
-        'tutorId': tutorId,
+        'tutorId': widget.usersDataApp.tutorId,
         'userIdRequest': userRequestId,
       });
 
@@ -83,6 +107,7 @@ class _BookPageState extends State<BookPage> {
     }
   }
 
+  List<Widget> starIcons = [];
   List<DateTime> _availableTimes = [];
 
   Future<List<DateTime>> fetchAvailableTimes(DateTime selectedDay) async {
@@ -204,15 +229,10 @@ class _BookPageState extends State<BookPage> {
                                 height: 8,
                               ),
                               //text
-                              const Column(
+                              Column(
                                 children: [
                                   Row(
-                                    children: [
-                                      Icon(Icons.star),
-                                      Icon(Icons.star_half),
-                                      Icon(Icons.star_border_outlined),
-                                      Icon(Icons.star_border_outlined),
-                                    ],
+                                    children: starIcons,
                                   ),
                                 ],
                               ),
@@ -222,8 +242,7 @@ class _BookPageState extends State<BookPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Nome Cognome',
-                                //TODO: pass name from previous page
+                                "${widget.usersDataApp.name} ${widget.usersDataApp.surname}",
                                 style: GoogleFonts.montserrat(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -237,15 +256,14 @@ class _BookPageState extends State<BookPage> {
                               Column(
                                 children: [
                                   Text(
-                                    'Classe',
-                                    //TODO:pass classe from previous page
+                                    widget.usersDataApp.classe,
                                     style: GoogleFonts.poppins(fontSize: 16),
                                   )
                                 ],
                               ),
                             ],
                           ),
-                          Column(
+                          /* Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
@@ -272,7 +290,7 @@ class _BookPageState extends State<BookPage> {
                                 ],
                               ),
                             ],
-                          ),
+                          ), */
                         ],
                       ),
                     ),

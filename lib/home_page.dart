@@ -275,11 +275,11 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 15),
+              padding: const EdgeInsets.only(left: 15),
               child: Text(
                 'In Evidenza',
                 style: GoogleFonts.roboto(
@@ -288,7 +288,7 @@ class _HomePageState extends State<HomePage> {
                     color: darkColorScheme.onBackground),
               ),
             ),
-            TutorCard(),
+            const TutorCard(),
           ],
         ),
       ),

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
+class UserDataApp {
   final String email;
   final String tutorId;
   final String name;
@@ -11,7 +11,7 @@ class User {
   final int stars;
   final List<Timestamp> days;
 
-  const User({
+  const UserDataApp({
     required this.email,
     required this.tutorId,
     required this.name,

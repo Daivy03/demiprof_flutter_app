@@ -1,9 +1,9 @@
 import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/book_page.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
+import 'package:demiprof_flutter_app/models/user_app.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,12 +22,12 @@ class _TutorCardState extends State<TutorCard> {
   List<int> stars = [];
   List<Widget> starIcons = [];
   List<NetworkImage> avatars = [];
+  List<UserDataApp> _users = [];
 
   @override
   void initState() {
     super.initState();
     getUsers();
-    //getStars();
     getAvatars();
   }
 
@@ -35,39 +35,28 @@ class _TutorCardState extends State<TutorCard> {
     try {
       QuerySnapshot snapshot = await firestore
           .collection('users')
-          .where('tutorId', isNotEqualTo: '') //controllo tutorId se valido
+          .where('tutorId', isNotEqualTo: '')
           .get();
+      List<UserDataApp> users = snapshot.docs.map((doc) {
+        return UserDataApp(
+          email: doc['email'] as String,
+          tutorId: doc['tutorId'] as String,
+          name: doc['name'] as String,
+          surname: doc['surname'] as String,
+          borndate: '',
+          classe: doc['classe'] as String,
+          materie: List<String>.from(doc['materie']),
+          stars: doc['stars'] as int,
+          days: [],
+        );
+      }).toList();
       setState(() {
-        names = snapshot.docs.map((doc) => doc['name'] as String).toList();
-        surnames =
-            snapshot.docs.map((doc) => doc['surname'] as String).toList();
+        _users = users;
       });
     } catch (e) {
       print('Error fetching users: $e');
     }
   }
-
-/*   Future<void> getStars() async {
-    try {
-      QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('users').get();
-      setState(() {
-        List<int> starsList =
-            snapshot.docs.map((doc) => doc['stars'] as int).toList();
-        stars = starsList;
-        starIcons = List.generate(starsList.length, (_) => Icon(Icons.star));
-      });
-      for (int i = 0; i < snapshot.docs.length; i++) {
-        String name = snapshot.docs[i]['name'] as String;
-        String surname = snapshot.docs[i]['surname'] as String;
-        int index = stars.indexOf(stars[i]);
-        names[index] = name;
-        surnames[index] = surname;
-      }
-    } catch (e) {
-      print('Error fetching stars: $e');
-    }
-  } */
 
   Future<void> getAvatars() async {
     try {
@@ -95,8 +84,10 @@ class _TutorCardState extends State<TutorCard> {
       child: SizedBox(
         height: 340,
         child: avatars.isEmpty
-            ? const Center(
-                child: CircularProgressIndicator(),
+            ? Center(
+                child: CircularProgressIndicator(
+                  color: darkColorScheme.primary,
+                ),
               )
             : ListView.builder(
                 itemBuilder: (context, index) {
@@ -127,9 +118,11 @@ class _TutorCardState extends State<TutorCard> {
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) => BookPage()));
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => BookPage(
+                                                  usersDataApp: _users[index],
+                                                )));
                                   },
                                   child: avatars.length > index
                                       ? ClipRRect(
@@ -166,7 +159,7 @@ class _TutorCardState extends State<TutorCard> {
                                           Row(
                                             children: [
                                               Text(
-                                                names[index],
+                                                _users[index].name,
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w400,
@@ -177,7 +170,7 @@ class _TutorCardState extends State<TutorCard> {
                                               FittedBox(
                                                 fit: BoxFit.scaleDown,
                                                 child: Text(
-                                                  surnames[index],
+                                                  _users[index].surname,
                                                   style: GoogleFonts.poppins(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -222,7 +215,7 @@ class _TutorCardState extends State<TutorCard> {
                 },
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
-                itemCount: names.length,
+                itemCount: _users.length,
               ),
       ),
     );

@@ -1,10 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
 import 'package:demiprof_flutter_app/custom_colors.dart';
 import 'package:demiprof_flutter_app/home_page.dart';
+import 'package:demiprof_flutter_app/models/prenotaz_model.dart';
+import 'package:demiprof_flutter_app/models/user_app.dart';
 import 'package:demiprof_flutter_app/user_settingpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -163,38 +167,6 @@ class SignInOptionsScreen extends StatelessWidget {
   }
 }
 
-/* class rolesChoice extends StatefulWidget {
-  const rolesChoice({Key? key}) : super(key: key);
-
-  @override
-  State<rolesChoice> createState() => _rolesChoice();
-}
-
-class _rolesChoice extends State<rolesChoice> {
-  @override
-  Widget build(BuildContext context) {
-    int? _value = 1;
-    List<String> ruoli = ['Studente', 'Tutor'];
-    return Scaffold(
-      body: Wrap(
-        spacing: 5.0,
-        children: ruoli.map((ruolo) {
-          int index = ruoli.indexOf(ruolo);
-          return ChoiceChip(
-            label: Text(ruolo),
-            selected: _value == index,
-            onSelected: (bool selected) {
-              setState(() {
-                _value = selected ? index : null;
-              });
-            },
-          );
-        }).toList(),
-      ),
-    );
-  }
-} */
-
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key? key}) : super(key: key);
 
@@ -203,24 +175,166 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  UserDataApp? _userData;
+  List<NetworkImage> avatars = [];
   bool isTutor = false;
+  bool isLoading = true;
   bool daysTapped = false;
   String _tutorId = "";
   TextEditingController _controllerDate = TextEditingController();
   Timestamp convDate = Timestamp(0, 0);
   String formattedDate = '';
-  static const Locale itLocale = const Locale('it', 'IT');
+  static const Locale itLocale = Locale('it', 'IT');
+
+  List<Map<String, dynamic>> prenotazioniWithUserData = [];
 
   @override
   void initState() {
     super.initState();
+    getUserData().then((_) {
+      setState(() {
+        isLoading = false;
+      });
+    });
+    getPrenotazioni();
+    getAvatars();
     getTutorId();
+    loadDataUi();
   }
 
   final User? user = Auth().currentUser;
+  void loadDataUi() async {
+    prenotazioniWithUserData = await getPrenotazioniWithUserData();
+  }
 
   Future<void> signOut() async {
     await Auth().signOut();
+  }
+
+  List<PrenotazioneModel> prenotazioni = [];
+  Future<List<PrenotazioneModel>> getPrenotazioni() async {
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+    try {
+      QuerySnapshot prenotazioniSnap;
+      if (_userData?.tutorId.isNotEmpty ?? false) {
+        prenotazioniSnap = await firestore
+            .collection('prenotazioni')
+            .where('tutorId', isEqualTo: _userData!.tutorId)
+            .get();
+      } else {
+        prenotazioniSnap = await firestore
+            .collection('prenotazioni')
+            .where('userIdRequest', isEqualTo: userId)
+            .get();
+      }
+
+      prenotazioniSnap.docs.forEach((doc) {
+        prenotazioni.add(PrenotazioneModel(
+          day: doc['day'] as Timestamp,
+          materia: doc['materia'] as String,
+          tutorId: doc['tutorId'] as String,
+          userIdRequest: doc['userIdRequest'] as String,
+        ));
+      });
+    } catch (e) {
+      print('Error fetching prenotazioni: $e');
+    }
+
+    return prenotazioni;
+  }
+
+  Future<List<Map<String, dynamic>>> getPrenotazioniWithUserData() async {
+    List<PrenotazioneModel> prenotazioni = await getPrenotazioni();
+
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+    List<Map<String, dynamic>> prenotazioniWithUserData = [];
+
+    for (int i = 0; i < prenotazioni.length; i++) {
+      PrenotazioneModel prenotazione = prenotazioni[i];
+
+      Map<String, dynamic> prenotazioneData = prenotazione.toJson();
+
+      if (prenotazione.tutorId != null && prenotazione.tutorId.isNotEmpty) {
+        DocumentSnapshot userSnap =
+            await firestore.collection('users').doc(prenotazione.tutorId).get();
+
+        if (userSnap.exists) {
+          Map<String, dynamic> userData = Map<String, dynamic>.from(
+              userSnap.data() as Map<String, dynamic>);
+          prenotazioneData['name'] = userData['name'];
+          prenotazioneData['surname'] = userData['surname'];
+          prenotazioneData['classe'] = userData['classe'];
+        }
+      } else if (prenotazione.userIdRequest == userId) {
+        DocumentSnapshot userSnap =
+            await firestore.collection('users').doc(userId).get();
+
+        if (userSnap.exists) {
+          Map<String, dynamic> userData = Map<String, dynamic>.from(
+              userSnap.data() as Map<String, dynamic>);
+          prenotazioneData['name'] = userData['name'];
+          prenotazioneData['surname'] = userData['surname'];
+          prenotazioneData['classe'] = userData['classe'];
+        }
+      }
+
+      prenotazioniWithUserData.add(prenotazioneData);
+    }
+
+    return prenotazioniWithUserData;
+  }
+
+  Future<void> getUserData() async {
+    try {
+      String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+      if (userId.isNotEmpty) {
+        DocumentSnapshot userDoc =
+            await firestore.collection('users').doc(userId).get();
+        if (userDoc.exists) {
+          _userData = UserDataApp(
+            email: userDoc['email'] as String,
+            tutorId: userDoc['tutorId'] as String,
+            name: userDoc['name'] as String,
+            surname: userDoc['surname'] as String,
+            borndate: '',
+            classe: userDoc['classe'] as String,
+            materie: List<String>.from(userDoc['materie']),
+            stars: userDoc['stars'] as int,
+            days: [],
+          );
+        }
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> getAvatars() async {
+    try {
+      final FirebaseStorage storage = FirebaseStorage.instance;
+      final Reference ref = storage.ref().child('avatar_images/');
+      final ListResult result = await ref.listAll();
+//List<NetworkImage> avatarList = []; // Change List<Image> to List<NetworkImage>
+      for (final Reference imageRef in result.items) {
+        final String url = await imageRef.getDownloadURL();
+        avatars.add(NetworkImage(
+          url,
+        ));
+      }
+      setState(() {
+        avatars = avatars;
+      });
+    } catch (e) {
+      print('Error fetching avatars: $e');
+    }
   }
 
   Widget _userUid() {
@@ -283,19 +397,28 @@ class _ProfilePageState extends State<ProfilePage> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              _userUid(),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              //text
-                              Column(
-                                children: [
-                                  Text(
-                                    'Classe',
-                                    style: GoogleFonts.poppins(fontSize: 16),
-                                  )
-                                ],
-                              ),
+                              if (_userData! != null) ...[
+                                Text(
+                                  "${_userData!.name} ${_userData!.surname}",
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      _userData!.email,
+                                      style: GoogleFonts.poppins(fontSize: 16),
+                                    )
+                                  ],
+                                ),
+                              ],
+                              if (_userData! == null) ...[
+                                Text('Name Surname is null'),
+                              ],
                             ],
                           ),
                         ],
@@ -305,35 +428,38 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Column(
                         children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.event_available_rounded,
-                                color: darkColorScheme.onSecondaryContainer,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'Lezioni prenotate',
-                                style: GoogleFonts.poppins(
-                                    fontSize: 19,
-                                    color:
-                                        darkColorScheme.onSecondaryContainer),
-                              ),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.event_available_rounded,
+                                  color: darkColorScheme.onSecondaryContainer,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Lezioni prenotate',
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 19,
+                                      color:
+                                          darkColorScheme.onSecondaryContainer),
+                                ),
+                              ],
+                            ),
                           )
                         ],
                       )
@@ -343,7 +469,155 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(
                   height: 6,
                 ),
-                SizedBox(
+                ListView.builder(
+                  itemBuilder: (context, index) {
+                    int stars = _userData!
+                        .stars; // fetch stars from db returning userData
+                    return Column(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.12,
+                          width: 500,
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(43, 34, 29, 1),
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: darkColorScheme.shadow,
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Stack(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      /* Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => BookPage(
+                                                    usersDataApp: _users[index],
+                                                  ))); */
+                                    },
+                                    child: avatars.length > index
+                                        ? ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topLeft: Radius.circular(15),
+                                              topRight: Radius.circular(15),
+                                            ),
+                                            child: CachedNetworkImage(
+                                              imageUrl: avatars[index].url,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.12,
+                                              width: 90,
+                                              placeholder: (context, url) =>
+                                                  Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color:
+                                                      darkColorScheme.primary,
+                                                ),
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
+                                            ),
+                                          )
+                                        : const SizedBox.shrink(),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 100, vertical: 10),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  //nome tutor/studente
+                                                  prenotazioniWithUserData[
+                                                      index]['name'],
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: darkColorScheme
+                                                          .onSecondaryContainer),
+                                                ),
+                                                const Text(" "), //spacing
+                                                FittedBox(
+                                                  fit: BoxFit.scaleDown,
+                                                  child: Text(
+                                                    //surname tutor/studente
+                                                    prenotazioniWithUserData[
+                                                        index]['surname'],
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: darkColorScheme
+                                                            .onSecondaryContainer),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              //materia della prenotazione
+                                              children: [
+                                                Text("Materia: "),
+                                                Text(
+                                                  prenotazioni[index].materia,
+                                                  style: GoogleFonts.poppins(
+                                                      color: darkColorScheme
+                                                          .onTertiaryContainer),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              //valutazione in stelle per tutor
+                                              children: [
+                                                Text("Classe: "),
+                                                Text(
+                                                  //surname tutor/studente
+                                                  prenotazioniWithUserData[
+                                                      index]['classe'],
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 12,
+                                                      color: darkColorScheme
+                                                          .onSecondaryContainer),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: prenotazioniWithUserData.length,
+                ),
+                /*  SizedBox(
                   height: 70,
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -393,10 +667,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                   ),
                 ),
-                const SizedBox(
-                  height: 6,
-                ),
-                SizedBox(
+                 */
+
+                /*  SizedBox(
                   height: 70,
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -441,36 +714,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
                     },
                   ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.aspectRatio),
-                Material(
-                  color: darkColorScheme.primary,
-                  borderRadius: BorderRadius.circular(35),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 1,
-                    ),
-                  ),
-                ),
+                ), */
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _signOutButton() {
-    return ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(AppColors.accent),
-      ),
-      onPressed: signOut,
-      child: Text(
-        'Logout',
-        style: GoogleFonts.poppins(
-          fontSize: 15,
-          color: darkColorScheme.onBackground,
         ),
       ),
     );
@@ -524,16 +771,16 @@ class _ProfilePageState extends State<ProfilePage> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(Icons.arrow_back),
+            child: const Icon(Icons.arrow_back),
           )),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         alignment: Alignment.topCenter,
         child: Center(
           child: TextField(
               controller:
                   _controllerDate, //editing controller of this TextField
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 icon: Icon(Icons.calendar_today), //icon of text field
                 labelText: "Inserisci giorno disponibile", //label text of field
               ),
@@ -641,43 +888,52 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 45,
-        title: _userUid(),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.menu_rounded),
-            tooltip: 'Mostra menu',
-            onPressed: () {
-              _showModalBottomSheet(context);
-            },
+    if (isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 45,
+          title: Text(
+            "${_userData!.email}",
+            style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
           ),
-        ],
-      ),
-      floatingActionButton: _tutorId.isEmpty
-          ? const SizedBox()
-          : FloatingActionButton(
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.menu_rounded),
+              tooltip: 'Mostra menu',
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => calendar()));
+                _showModalBottomSheet(context);
               },
-              child: const Icon(Icons.add),
             ),
-      backgroundColor: darkColorScheme.background,
-      body: Container(
-        //height: double.infinity,
-        //width: double.infinity,
-        padding: const EdgeInsets.all(2),
-        child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.center,
-          //mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            userBook(context),
-            //_signOutButton(),
           ],
         ),
-      ),
-    );
+        floatingActionButton: _tutorId.isEmpty
+            ? const SizedBox()
+            : FloatingActionButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => calendar()));
+                },
+                child: const Icon(Icons.add),
+              ),
+        backgroundColor: darkColorScheme.background,
+        body: Container(
+          //height: double.infinity,
+          //width: double.infinity,
+          padding: const EdgeInsets.all(2),
+          child: Column(
+            //crossAxisAlignment: CrossAxisAlignment.center,
+            //mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              userBook(context),
+              //_signOutButton(),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }
