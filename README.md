@@ -2,6 +2,8 @@
 
 Demiprof app completely rewrited in flutter.
 
+<img src="https://user-images.githubusercontent.com/75785698/235377241-5efe2da3-761d-4ca1-b6f7-868dd99af62d.jpeg" width="30%" height="30%"/>
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
