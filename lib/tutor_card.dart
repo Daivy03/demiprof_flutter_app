@@ -7,6 +7,7 @@ import 'package:demiprof_flutter_app/models/user_app.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class TutorCard extends StatefulWidget {
   const TutorCard({Key? key}) : super(key: key);
@@ -48,6 +49,7 @@ class _TutorCardState extends State<TutorCard> {
           materie: List<String>.from(doc['materie']),
           stars: doc['stars'] as int,
           days: [],
+          userImage: doc['userImage'] as String,
         );
       }).toList();
       setState(() {
@@ -124,14 +126,14 @@ class _TutorCardState extends State<TutorCard> {
                                                   usersDataApp: _users[index],
                                                 )));
                                   },
-                                  child: avatars.length > index
+                                  child: _users.length > index
                                       ? ClipRRect(
                                           borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(15),
                                             topRight: Radius.circular(15),
                                           ),
                                           child: CachedNetworkImage(
-                                            imageUrl: avatars[index].url,
+                                            imageUrl: _users[index].userImage,
                                             height: 90,
                                             width: 90,
                                             placeholder: (context, url) =>
@@ -139,9 +141,12 @@ class _TutorCardState extends State<TutorCard> {
                                               child:
                                                   CircularProgressIndicator(),
                                             ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    const Icon(Icons.error),
+                                            errorWidget: (context, url,
+                                                    error) =>
+                                                /* const Icon(Icons.error), */
+                                                SvgPicture.asset(
+                                              "assets/pic_profile.svg",
+                                            ),
                                           ),
                                         )
                                       : const SizedBox.shrink(),

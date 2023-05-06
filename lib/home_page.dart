@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,6 +84,7 @@ class _HomePageState extends State<HomePage> {
 
   String _username = "";
   String _usersurname = "";
+  String _userImage = "";
 
   @override
   void initState() {
@@ -99,10 +101,16 @@ class _HomePageState extends State<HomePage> {
         .get();
     _username = (snap.data() as Map<String, dynamic>)['name'];
     _usersurname = (snap.data() as Map<String, dynamic>)['surname'];
+    String userImage = (snap.data() as Map<String, dynamic>)['userImage'];
     setState(() {
       _username = (snap.data() as Map<String, dynamic>)['name'];
       _usersurname = (snap.data() as Map<String, dynamic>)['surname'];
     });
+    if (userImage != null) {
+      setState(() {
+        _userImage = userImage;
+      });
+    }
   }
 
   @override
@@ -119,9 +127,11 @@ class _HomePageState extends State<HomePage> {
             height: 20,
             margin: EdgeInsets.symmetric(horizontal: 5),
             padding: const EdgeInsets.only(left: 12),
-            child: SvgPicture.asset("assets/black.svg",
-                colorFilter:
-                    ColorFilter.mode(darkColorScheme.primary, BlendMode.srcIn)),
+            child: SvgPicture.asset(
+              "assets/black.svg",
+              colorFilter:
+                  ColorFilter.mode(darkColorScheme.primary, BlendMode.srcIn),
+            ),
           ),
           title: Padding(
             padding: const EdgeInsets.only(top: 5),
@@ -198,10 +208,25 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           ClipOval(
+                            clipBehavior: Clip.antiAlias,
                             child: SizedBox(
                               width: 70,
                               height: 70,
-                              child: SvgPicture.asset("assets/pic_profile.svg"),
+                              child: CachedNetworkImage(
+                                imageUrl: _userImage,
+                                height: 90,
+                                width: 90,
+                                placeholder: (context, url) => Center(
+                                  child: CircularProgressIndicator(
+                                    color: darkColorScheme.primary,
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    /* const Icon(Icons.error), */
+                                    SvgPicture.asset(
+                                  "assets/pic_profile.svg",
+                                ),
+                              ),
                             ),
                           ),
                         ],

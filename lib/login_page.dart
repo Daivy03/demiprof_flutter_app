@@ -72,6 +72,7 @@ class _LoginPageState extends State<LoginPage> {
       showMessage(context);
     } on FirebaseAuthException catch (e) {
       _updateErrorMessage(e.message!); //verifica msg not null
+      print(e.message);
     }
   }
 
@@ -137,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
         color: darkColorScheme.onBackground.withOpacity(0.4),
         borderRadius: BorderRadius.circular(30),
       ),
-      child: TextField(
+      child: TextFormField(
         keyboardType: TextInputType.name,
         style: GoogleFonts.poppins(
             fontSize: 15, color: darkColorScheme.onBackground),

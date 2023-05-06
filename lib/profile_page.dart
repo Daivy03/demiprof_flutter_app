@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
 import 'package:demiprof_flutter_app/custom_colors.dart';
@@ -14,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter/painting.dart';
 
 class SignInOptionsScreen extends StatelessWidget {
   const SignInOptionsScreen({Key? key}) : super(key: key);
@@ -148,14 +151,14 @@ class SignInOptionsScreen extends StatelessWidget {
                     Icon(
                       MdiIcons.logout,
                       size: 25,
-                      color: darkColorScheme.onBackground,
+                      color: darkColorScheme.primary,
                     ),
                     SizedBox(
                       width: 10,
                     ),
                     Text("Log out",
                         style: GoogleFonts.montserrat(
-                            color: darkColorScheme.onBackground))
+                            color: darkColorScheme.primary))
                   ],
                 ),
               ),
@@ -177,6 +180,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   UserDataApp? _userData;
+  File? imageXFile;
   List<NetworkImage> avatars = [];
   bool isTutor = false;
   bool isLoading = true;
@@ -305,6 +309,7 @@ class _ProfilePageState extends State<ProfilePage> {
             materie: List<String>.from(userDoc['materie']),
             stars: userDoc['stars'] as int,
             days: [],
+            userImage: userDoc['userImage'] as String,
           );
         }
       }
@@ -347,6 +352,14 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  Widget dbImage() {
+    return Image(
+      image: imageXFile == null
+          ? NetworkImage(_userData!.userImage) as ImageProvider<Object>
+          : AssetImage('assets/circleavatar.png'),
+    );
+  }
+
   Widget userBook(context) {
     return Material(
       color: darkColorScheme.background,
@@ -356,9 +369,14 @@ class _ProfilePageState extends State<ProfilePage> {
             Container(
               width: MediaQuery.of(context).size.width,
               height: 300,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/circleavatar.png'),
+                  //TODO: Load avatar from db
+                  //AssetImage('assets/circleavatar.png')
+                  image: _userData!.userImage != ""
+                      ? NetworkImage(_userData!.userImage)
+                          as ImageProvider<Object>
+                      : AssetImage('assets/circleavatar.png'),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.only(

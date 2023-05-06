@@ -45,6 +45,7 @@ class Auth {
       materie: materie,
       stars: 0,
       days: days,
+      userImage: "",
     );
     await _firestore
         .collection("users")

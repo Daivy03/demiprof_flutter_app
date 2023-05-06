@@ -1,12 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
+import 'package:demiprof_flutter_app/models/user_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'dart:io';
 
 class UserSettingPage extends StatefulWidget {
   UserSettingPage({super.key});
@@ -20,6 +25,11 @@ class _UserSettingPageState extends State<UserSettingPage> {
   @override
   void initState() {
     super.initState();
+    getUserData().then((_) {
+      setState(() {
+        isLoading = false;
+      });
+    });
     _fetchUserBirthdate();
     classeSubmitEdit();
     borndateSubmitPicker();
@@ -28,6 +38,38 @@ class _UserSettingPageState extends State<UserSettingPage> {
   TextEditingController _controllerBorndate = TextEditingController();
   TextEditingController _controllerClasse = TextEditingController();
   String formattedDate = '';
+  UserDataApp? _userData;
+  Future<void> getUserData() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    try {
+      String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+      if (userId.isNotEmpty) {
+        DocumentSnapshot userDoc =
+            await firestore.collection('users').doc(userId).get();
+        if (userDoc.exists) {
+          _userData = UserDataApp(
+            email: userDoc['email'] as String,
+            tutorId: userDoc['tutorId'] as String,
+            name: userDoc['name'] as String,
+            surname: userDoc['surname'] as String,
+            borndate: '',
+            classe: userDoc['classe'] as String,
+            materie: List<String>.from(userDoc['materie']),
+            stars: userDoc['stars'] as int,
+            days: [],
+            userImage: userDoc['userImage'] as String,
+          );
+        }
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   Future<void> addMateria(String materia) async {
     final User? user = FirebaseAuth.instance.currentUser;
@@ -45,29 +87,6 @@ class _UserSettingPageState extends State<UserSettingPage> {
     });
   }
 
-//old method test1
-  /* void classeSubmitEdit() async {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
-    final String userId = user!.uid;
-
-    final CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection('users');
-    final DocumentReference userDocRef = usersCollection.doc(userId);
-
-    try {
-      DocumentSnapshot userDocSnapshot = await userDocRef.get();
-      String? classe = userDocSnapshot.get('classe');
-      if (classe == null || classe.isEmpty) {
-        _controllerClasse.text = 'Nessuna classe';
-      } else {
-        _controllerClasse.text = classe;
-      }
-    } catch (e) {
-      print(
-          'Si è verificato un errore durante il recupero del campo "classe" per l\'utente $userId: $e');
-    }
-  } */
   void classeSubmitEdit() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
@@ -84,6 +103,38 @@ class _UserSettingPageState extends State<UserSettingPage> {
       print(
           'Si è verificato un errore durante l\'aggiornamento del campo "classe" per l\'utente $userId: $e');
     }
+  }
+
+  String userImageURL = '';
+
+  void pickUploadImage() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final String userId = user!.uid;
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    final DocumentReference userDocRef = usersCollection.doc(userId);
+    Reference ref =
+        FirebaseStorage.instance.ref().child("avatar_images/$userId.jpg");
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxHeight: 512,
+      maxWidth: 512,
+      imageQuality: 85,
+    );
+    await ref.putFile(File(image!.path));
+    ref.getDownloadURL().then(
+      (value) {
+        print(value);
+        try {
+          // Aggiorna il campo "userImage" nel documento dell'utente corrente
+          userDocRef.update({'userImage': value});
+        } catch (e) {}
+        setState(() {
+          userImageURL = value;
+        });
+      },
+    );
   }
 
   void borndateSubmitPicker() async {
@@ -167,17 +218,28 @@ class _UserSettingPageState extends State<UserSettingPage> {
           Center(
             child: InkWell(
               onTap: () {
-                //
+                //TODO: Avatar upload method
+                pickUploadImage();
               },
               child: ClipRRect(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(15),
                   topRight: Radius.circular(15),
                 ),
-                child: SvgPicture.asset(
-                  'assets/pic_profile.svg',
-                  height: 120,
-                  width: 120,
+                child: CachedNetworkImage(
+                  imageUrl: userImageURL,
+                  height: 90,
+                  width: 90,
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) =>
+                      /* const Icon(Icons.error), */
+                      _userData!.userImage != null
+                          ? CachedNetworkImage(imageUrl: _userData!.userImage)
+                          : SvgPicture.asset(
+                              "assets/pic_profile.svg",
+                            ),
                 ),
               ),
             ),
@@ -192,7 +254,7 @@ class _UserSettingPageState extends State<UserSettingPage> {
           SizedBox(
             height: 20,
           ),
-          Padding(
+          /*  Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextField(
               readOnly: true,
@@ -206,7 +268,7 @@ class _UserSettingPageState extends State<UserSettingPage> {
                     : '',
               ),
             ),
-          ),
+          ), */
           Column(
             children: [
               Container(

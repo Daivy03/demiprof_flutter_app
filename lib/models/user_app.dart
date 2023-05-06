@@ -10,6 +10,7 @@ class UserDataApp {
   final List<String> materie;
   final int stars;
   final List<Timestamp> days;
+  final String userImage;
 
   const UserDataApp({
     required this.email,
@@ -21,6 +22,7 @@ class UserDataApp {
     required this.materie,
     required this.stars,
     required this.days,
+    required this.userImage,
   });
 
   Map<String, dynamic> toJson() => {
@@ -33,5 +35,6 @@ class UserDataApp {
         "materie": materie,
         "stars": stars,
         "days": days,
+        "userImage": userImage,
       };
 }
