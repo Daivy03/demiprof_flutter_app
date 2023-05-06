@@ -2,7 +2,7 @@
 
 Demiprof app completely rewrited in flutter.
 
-<img src="https://user-images.githubusercontent.com/75785698/235377241-5efe2da3-761d-4ca1-b6f7-868dd99af62d.jpeg" width="30%" height="30%"/>
+<img src="https://user-images.githubusercontent.com/75785698/236619604-7a214ea9-ef46-4b21-8a55-0ae4ef202673.png" width="30%" height="30%"/>
 
 ## Getting Started
 
