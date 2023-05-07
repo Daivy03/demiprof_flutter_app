@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
+import 'package:demiprof_flutter_app/models/user_app.dart';
 import 'package:demiprof_flutter_app/popular_filter_list.dart';
+import 'package:demiprof_flutter_app/results.dart';
 import 'package:demiprof_flutter_app/tutor_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:logger/logger.dart';
+import 'package:intl/intl.dart';
 
 class FiltersScreen extends StatefulWidget {
   @override
@@ -13,14 +17,101 @@ class FiltersScreen extends StatefulWidget {
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
+  @override
+  void initState() {
+    super.initState();
+    getMaterieDb();
+  }
+
   static List<PopularFilterListData> accomodationList =
       <PopularFilterListData>[];
-
   List<PopularFilterListData> popularFilterListData =
       PopularFilterListData.popularFList;
   List<PopularFilterListData> accomodationListData = accomodationList;
+  final Logger logger = Logger();
 
   final TextEditingController _searchController = TextEditingController();
+  List<UserDataApp> usersData = [];
+
+  final List<String> selectedSubjects = []; // Lista dei soggetti selezionati
+  List<String> materie = [];
+
+  Future<List<UserDataApp>> searchUsers(String term) async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      // Effettua le query separate su Firestore cercando la stringa in tutti i campi desiderati
+      QuerySnapshot querySnapshot1 = await firestore
+          .collection('users')
+          .where('tutorId', isNotEqualTo: '')
+          .where('name', isEqualTo: term)
+          .get();
+
+      List<QueryDocumentSnapshot<Object?>> documents = [];
+      documents.addAll(querySnapshot1.docs);
+
+      // Rimuovi eventuali duplicati
+      documents = documents.toSet().toList();
+
+      List<UserDataApp> users = documents.map((doc) {
+        Timestamp timestamp = doc['borndate'] as Timestamp;
+        DateTime dateTime = timestamp.toDate();
+        String formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
+        return UserDataApp(
+          email: doc['email'] as String,
+          tutorId: doc['tutorId'] as String,
+          name: doc['name'] as String,
+          borndate: formattedDate,
+          surname: doc['surname'] as String,
+          classe: doc['classe'] as String,
+          materie: List<String>.from(doc['materie']),
+          stars: doc['stars'] as int,
+          days: [],
+          userImage: doc['userImage'] as String,
+        );
+      }).toList();
+      setState(() {
+        usersData = users;
+      });
+
+      // Assegna i risultati alla variabile usersData
+      usersData = users;
+
+      // Stampa i risultati
+      logger.d('Risultati:');
+      usersData.forEach((user) {
+        logger.d('Nome: ${user.name}');
+        logger.d('Cognome: ${user.surname}');
+        logger.d('Materie: ${user.materie}');
+        logger.d('Classe: ${user.classe}');
+        logger.d('Stelle: ${user.stars}');
+        logger.d('---');
+      });
+
+      // Ritorna la lista dei documenti trovati
+      return usersData;
+    } catch (e) {
+      print('Errore durante la ricerca degli utenti: $e');
+      return [];
+    }
+  }
+
+  Future<List<String>> getMaterieDb() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    QuerySnapshot materieSnapshot = await firestore.collection('materie').get();
+
+    List<String> materieList = [];
+    materieSnapshot.docs.forEach((doc) {
+      String materia = doc.get('nome')
+          as String; // Supponendo che il campo contenente il nome della materia sia "nome"
+      materieList.add(materia);
+    });
+    setState(() {
+      materie = materieList;
+    });
+
+    return materieList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +126,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    priceBarFilter(),
-                    popularFilter(),
+                    getSearchBarUI(),
                   ],
                 ),
               ),
@@ -61,8 +151,12 @@ class _FiltersScreenState extends State<FiltersScreen> {
                     borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                     highlightColor: Colors.transparent,
                     onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => TutorCard()));
+                      /* Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => TutorCard())); */
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Results(
+                                usersDataApp: usersData,
+                              )));
                     },
                     child: Center(
                       child: Text(
@@ -80,6 +174,29 @@ class _FiltersScreenState extends State<FiltersScreen> {
           ],
         ),
       ),
+    );
+  }
+
+// Widget della CheckboxList
+  Widget buildCheckboxList() {
+    return ListView(
+      children: [
+        for (String subject
+            in materie) // subjects è la lista dei soggetti disponibili
+          CheckboxListTile(
+            title: Text(subject),
+            value: selectedSubjects.contains(subject),
+            onChanged: (bool? value) {
+              setState(() {
+                if (value != null && value) {
+                  selectedSubjects.add(subject);
+                } else {
+                  selectedSubjects.remove(subject);
+                }
+              });
+            },
+          ),
+      ],
     );
   }
 
@@ -118,7 +235,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                       fontSize: 18,
                     ),
                     cursorColor: darkColorScheme.secondary,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Cerca...',
                     ),
@@ -162,203 +279,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
     );
   }
 
-  Widget getFilterBarUI() {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            height: 24,
-            decoration: BoxDecoration(
-              color: darkColorScheme.background,
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    offset: const Offset(0, -2),
-                    blurRadius: 8.0),
-              ],
-            ),
-          ),
-        ),
-        Container(
-          color: darkColorScheme.background,
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
-            child: Row(
-              children: <Widget>[
-                const Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      '530 hotels found',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w100,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    splashColor: Colors.grey.withOpacity(0.2),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(4.0),
-                    ),
-                    onTap: () {
-                      /*  FocusScope.of(context).requestFocus(FocusNode());
-                      Navigator.push<dynamic>(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) => FiltersScreen(),
-                            fullscreenDialog: true),
-                      ); */
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            'Filter',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w100,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(Icons.sort,
-                                color: darkColorScheme.primary),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Divider(
-            height: 1,
-          ),
-        )
-      ],
-    );
-  }
-
-  List<Widget> getAccomodationListUI() {
-    final List<Widget> noList = <Widget>[];
-    for (int i = 0; i < accomodationListData.length; i++) {
-      final PopularFilterListData date = accomodationListData[i];
-      noList.add(
-        Material(
-          color: Colors.transparent,
-          child: InkWell(
-            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-            onTap: () {
-              setState(() {
-                checkAppPosition(i);
-              });
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      date.titleTxt,
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  CupertinoSwitch(
-                    activeColor: date.isSelected
-                        ? darkColorScheme.primary
-                        : Colors.grey.withOpacity(0.6),
-                    onChanged: (bool value) {
-                      setState(() {
-                        checkAppPosition(i);
-                      });
-                    },
-                    value: date.isSelected,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-      if (i == 0) {
-        noList.add(const Divider(
-          height: 1,
-        ));
-      }
-    }
-    return noList;
-  }
-
-  void checkAppPosition(int index) {
-    if (index == 0) {
-      if (accomodationListData[0].isSelected) {
-        accomodationListData.forEach((d) {
-          d.isSelected = false;
-        });
-      } else {
-        accomodationListData.forEach((d) {
-          d.isSelected = true;
-        });
-      }
-    } else {
-      accomodationListData[index].isSelected =
-          !accomodationListData[index].isSelected;
-
-      int count = 0;
-      for (int i = 0; i < accomodationListData.length; i++) {
-        if (i != 0) {
-          final PopularFilterListData data = accomodationListData[i];
-          if (data.isSelected) {
-            count += 1;
-          }
-        }
-      }
-
-      if (count == accomodationListData.length - 1) {
-        accomodationListData[0].isSelected = true;
-      } else {
-        accomodationListData[0].isSelected = false;
-      }
-    }
-  }
-
-  Future<List<QueryDocumentSnapshot>> searchUsers(String term) async {
-    try {
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-      // Effettua la query su Firestore filtrando i documenti che contengono il termine cercato
-      QuerySnapshot querySnapshot = await firestore
-          .collection('users')
-          .where('name', isGreaterThanOrEqualTo: term)
-          .get();
-
-      // Ritorna la lista dei documenti trovati
-      return querySnapshot.docs;
-    } catch (e) {
-      print('Errore durante la ricerca degli utenti: $e');
-      return [];
-    }
-  }
-
-  Widget popularFilter() {
+  /* Widget popularFilter() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -395,9 +316,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
         )
       ],
     );
-  }
+  } */
 
-  List<Widget> getPList() {
+  /* List<Widget> getPList() {
     final List<Widget> noList = <Widget>[];
     int count = 0;
     const int columnCount = 2;
@@ -462,11 +383,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
     }
     return noList;
   }
-
-  Widget priceBarFilter() {
-    return getSearchBarUI();
-  }
-
+ */
   Widget getAppBarUI() {
     return Container(
       decoration: BoxDecoration(

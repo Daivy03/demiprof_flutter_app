@@ -37,4 +37,18 @@ class UserDataApp {
         "days": days,
         "userImage": userImage,
       };
+  factory UserDataApp.fromJson(Map<String, dynamic> json) {
+    return UserDataApp(
+      email: json['email'],
+      tutorId: json['tutorId'],
+      name: json['name'],
+      surname: json['surname'],
+      borndate: json['borndate'],
+      classe: json['classe'],
+      materie: List<String>.from(json['materie']),
+      stars: json['stars'],
+      days: List<Timestamp>.from(json['days']),
+      userImage: json['userImage'],
+    );
+  }
 }

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/book_page.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
 import 'package:demiprof_flutter_app/models/user_app.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -48,7 +49,7 @@ class _TutorCardState extends State<TutorCard> {
           classe: doc['classe'] as String,
           materie: List<String>.from(doc['materie']),
           stars: doc['stars'] as int,
-          days: [],
+          days: List<Timestamp>.from(doc['days'] ?? []),
           userImage: doc['userImage'] as String,
         );
       }).toList();
@@ -57,6 +58,37 @@ class _TutorCardState extends State<TutorCard> {
       });
     } catch (e) {
       print('Error fetching users: $e');
+    }
+  }
+
+  List<DateTime> _availableTimes = [];
+
+  Future<List<DateTime>> fetchAvailableTimes(DateTime selectedDay) async {
+    final FirebaseAuth _firebase = FirebaseAuth.instance;
+    final User? user = _firebase.currentUser;
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    final DocumentReference userDocRef = usersCollection.doc(user!.uid);
+
+    try {
+      DocumentSnapshot userDocSnapshot = await userDocRef.get();
+      List<Timestamp> allTimes = List.from(userDocSnapshot.get('times'));
+      List<Timestamp> availableTimes = allTimes
+          .where((timestamp) =>
+              timestamp.toDate().year == selectedDay.year &&
+              timestamp.toDate().month == selectedDay.month &&
+              timestamp.toDate().day == selectedDay.day)
+          .toList();
+      List<DateTime> availableDateTimes =
+          availableTimes.map((timestamp) => timestamp.toDate()).toList();
+      setState(() {
+        _availableTimes = availableDateTimes;
+      });
+      return availableDateTimes;
+    } catch (e) {
+      print(
+          'Si è verificato un errore durante il recupero degli orari disponibili per il giorno selezionato: $e');
+      return [];
     }
   }
 

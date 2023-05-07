@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/book_success.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
 import 'package:demiprof_flutter_app/models/user_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -86,24 +88,19 @@ class _BookPageState extends State<BookPage> {
   }
 
   DateTime? selectedDate;
+  DateTime? selectedTime;
   List<Timestamp> _days = [];
 
   Future<void> fetchDays() async {
-    final FirebaseAuth _firebase = FirebaseAuth.instance;
-    final User? user = _firebase.currentUser;
-    final CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection('users');
-    final DocumentReference userDocRef = usersCollection.doc(user!.uid);
-
     try {
-      DocumentSnapshot userDocSnapshot = await userDocRef.get();
-      List<Timestamp> days = List.from(userDocSnapshot.get('days'));
+      List<Timestamp> days = widget.usersDataApp.days;
       setState(() {
         _days = days;
       });
     } catch (e) {
       print(
-          'Si è verificato un errore durante il recupero del campo "days" per l\'utente corrente: $e');
+        'Si è verificato un errore durante il recupero della lista "days": $e',
+      );
     }
   }
 
@@ -111,32 +108,19 @@ class _BookPageState extends State<BookPage> {
   List<DateTime> _availableTimes = [];
 
   Future<List<DateTime>> fetchAvailableTimes(DateTime selectedDay) async {
-    final FirebaseAuth _firebase = FirebaseAuth.instance;
-    final User? user = _firebase.currentUser;
-    final CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection('users');
-    final DocumentReference userDocRef = usersCollection.doc(user!.uid);
+    List<Timestamp> availableTimes = widget.usersDataApp.days
+        .where((timestamp) =>
+            timestamp.toDate().year == selectedDay.year &&
+            timestamp.toDate().month == selectedDay.month &&
+            timestamp.toDate().day == selectedDay.day)
+        .toList();
 
-    try {
-      DocumentSnapshot userDocSnapshot = await userDocRef.get();
-      List<Timestamp> allTimes = List.from(userDocSnapshot.get('times'));
-      List<Timestamp> availableTimes = allTimes
-          .where((timestamp) =>
-              timestamp.toDate().year == selectedDay.year &&
-              timestamp.toDate().month == selectedDay.month &&
-              timestamp.toDate().day == selectedDay.day)
-          .toList();
-      List<DateTime> availableDateTimes =
-          availableTimes.map((timestamp) => timestamp.toDate()).toList();
-      setState(() {
-        _availableTimes = availableDateTimes;
-      });
-      return availableDateTimes;
-    } catch (e) {
-      print(
-          'Si è verificato un errore durante il recupero degli orari disponibili per il giorno selezionato: $e');
-      return [];
-    }
+    List<DateTime> availableDateTimes =
+        availableTimes.map((timestamp) => timestamp.toDate()).toList();
+    setState(() {
+      _availableTimes = availableDateTimes;
+    });
+    return availableDateTimes;
   }
 
   @override
@@ -149,9 +133,14 @@ class _BookPageState extends State<BookPage> {
             Container(
               width: MediaQuery.of(context).size.width,
               height: 300,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/circleavatar.png'),
+                  image: widget.usersDataApp.userImage != null &&
+                          widget.usersDataApp.userImage.isNotEmpty
+                      ? CachedNetworkImageProvider(
+                              widget.usersDataApp.userImage)
+                          as ImageProvider<Object>
+                      : AssetImage('assets/circleavatar.png'),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.only(
@@ -454,36 +443,44 @@ class _BookPageState extends State<BookPage> {
 
                       return Column(
                         children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 10),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: index == 1
-                                  ? darkColorScheme.tertiary
-                                  : darkColorScheme.onSecondary,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: darkColorScheme.primary,
-                                  blurRadius: 1,
-                                  spreadRadius: 0,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                // visualizza l'ora
-                                Text(
-                                  DateFormat('HH:mm', 'it_IT').format(time),
-                                  style: GoogleFonts.poppins(
-                                      color: index == 1
-                                          ? darkColorScheme.secondaryContainer
-                                          : darkColorScheme.primary),
-                                ),
-                              ],
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedTime =
+                                    time; // Memorizza l'orario selezionato
+                              });
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: index == 1
+                                    ? darkColorScheme.tertiary
+                                    : darkColorScheme.onSecondary,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: darkColorScheme.primary,
+                                    blurRadius: 1,
+                                    spreadRadius: 0,
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  // visualizza l'ora
+                                  Text(
+                                    DateFormat('HH:mm', 'it_IT').format(time),
+                                    style: GoogleFonts.poppins(
+                                        color: index == 1
+                                            ? darkColorScheme.secondaryContainer
+                                            : darkColorScheme.primary),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],

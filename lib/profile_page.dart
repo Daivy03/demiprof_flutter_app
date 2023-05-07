@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:calendar_appbar/calendar_appbar.dart';
 import 'package:demiprof_flutter_app/color_schemes.g.dart';
 import 'package:demiprof_flutter_app/custom_colors.dart';
 import 'package:demiprof_flutter_app/home_page.dart';
@@ -12,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demiprof_flutter_app/auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
@@ -201,7 +203,7 @@ class _ProfilePageState extends State<ProfilePage> {
         isLoading = false;
       });
     });
-    getPrenotazioni();
+    //getPrenotazioni();
     getAvatars();
     getTutorId();
     loadDataUi();
@@ -249,6 +251,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return prenotazioni;
   }
 
+//inizio metodo
   Future<List<Map<String, dynamic>>> getPrenotazioniWithUserData() async {
     List<PrenotazioneModel> prenotazioni = await getPrenotazioni();
 
@@ -271,6 +274,7 @@ class _ProfilePageState extends State<ProfilePage> {
           prenotazioneData['name'] = userData['name'];
           prenotazioneData['surname'] = userData['surname'];
           prenotazioneData['classe'] = userData['classe'];
+          prenotazioneData['userImage'] = userData['userImage'];
         }
       } else if (prenotazione.userIdRequest == userId) {
         DocumentSnapshot userSnap =
@@ -286,10 +290,12 @@ class _ProfilePageState extends State<ProfilePage> {
       }
 
       prenotazioniWithUserData.add(prenotazioneData);
+      print(prenotazioniWithUserData);
     }
 
     return prenotazioniWithUserData;
   }
+  //fine metodo
 
   Future<void> getUserData() async {
     try {
@@ -522,7 +528,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     usersDataApp: _users[index],
                                                   ))); */
                                     },
-                                    child: avatars.length > index
+                                    child: prenotazioniWithUserData.length >
+                                            index
                                         ? ClipRRect(
                                             borderRadius:
                                                 const BorderRadius.only(
@@ -530,7 +537,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                               topRight: Radius.circular(15),
                                             ),
                                             child: CachedNetworkImage(
-                                              imageUrl: avatars[index].url,
+                                              //avatars[index].url
+                                              imageUrl:
+                                                  prenotazioniWithUserData[
+                                                      index]['userImage'],
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height *
@@ -544,9 +554,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       darkColorScheme.primary,
                                                 ),
                                               ),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      const Icon(Icons.error),
+                                              errorWidget: (context, url,
+                                                      error) =>
+                                                  /* const Icon(Icons.error), */
+                                                  SvgPicture.asset(
+                                                "assets/pic_profile.svg",
+                                              ),
                                             ),
                                           )
                                         : const SizedBox.shrink(),
@@ -904,18 +917,26 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  Future<void> _refresh() async {
+    await Future.delayed(Duration(seconds: 2));
+    getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
       return Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: darkColorScheme.primary,
+        ),
       );
     } else {
       return Scaffold(
         appBar: AppBar(
           toolbarHeight: 45,
+          //"${_userData!.email}"
           title: Text(
-            "${_userData!.email}",
+            "Profilo",
             style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
           ),
           actions: <Widget>[
@@ -938,17 +959,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: const Icon(Icons.add),
               ),
         backgroundColor: darkColorScheme.background,
-        body: Container(
-          //height: double.infinity,
-          //width: double.infinity,
-          padding: const EdgeInsets.all(2),
-          child: Column(
-            //crossAxisAlignment: CrossAxisAlignment.center,
-            //mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              userBook(context),
-              //_signOutButton(),
-            ],
+        body: RefreshIndicator(
+          onRefresh: _refresh,
+          child: Container(
+            padding: const EdgeInsets.all(2),
+            child: Column(
+              children: <Widget>[
+                userBook(context),
+              ],
+            ),
           ),
         ),
       );

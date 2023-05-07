@@ -216,6 +216,7 @@ class _HomePageState extends State<HomePage> {
                                 imageUrl: _userImage,
                                 height: 90,
                                 width: 90,
+                                fit: BoxFit.cover,
                                 placeholder: (context, url) => Center(
                                   child: CircularProgressIndicator(
                                     color: darkColorScheme.primary,
