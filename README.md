@@ -1,7 +1,15 @@
-# demiprof_flutter_app
+<div align="center">
+<img src="https://i.imgur.com/XMsZqNU.png" alt="Logo" width="45%" height="45%">
+<p>
+  powered by
+</p>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Google-flutter-logo.svg/2560px-Google-flutter-logo.svg.png" width="25%" height="25%">
 
-Demiprof app completely rewrited in flutter.
-
+</div>
+<h2>Project Goal</h2>
+Demiprof app completely rewrited in <a href="https://flutter.dev/">Flutter</a>.
+<br>
+<br>
 <img src="https://user-images.githubusercontent.com/75785698/236619604-7a214ea9-ef46-4b21-8a55-0ae4ef202673.png" width="30%" height="30%"/>
 
 ## Getting Started
