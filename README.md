@@ -9,6 +9,8 @@
 </div>
 
 [![demiprof-flutter](https://github.com/Daivy03/demiprof_flutter_app/actions/workflows/deploy-app.yml/badge.svg)](https://github.com/Daivy03/demiprof_flutter_app/actions/workflows/deploy-app.yml)
+[![Firebase Hosting](https://img.shields.io/badge/firebase-hosting-orange?logo=firebase)](https://demiprof-b12be-default-rtdb.europe-west1.firebasedatabase.app)
+
 
 <h2>Project Goal</h2>
 Demiprof app completely rewrited in <a href="https://flutter.dev/">Flutter</a>.
