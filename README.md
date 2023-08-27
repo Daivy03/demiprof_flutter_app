@@ -61,4 +61,5 @@ https://www.fluttericon.com/
 - [Get Started with Material 3](https://m3.material.io/get-started)
 - [Flutter Docs for Material 3](https://m3.material.io/develop/flutter)
 
-
+# License
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
