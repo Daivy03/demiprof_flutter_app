@@ -6,8 +6,10 @@
   <a href="https://flutter.dev/">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Google-flutter-logo.svg/2560px-Google-flutter-logo.svg.png" width="25%" height="25%">
   </a>
-
 </div>
+
+[![demiprof-flutter](https://github.com/Daivy03/demiprof_flutter_app/actions/workflows/deploy-app.yml/badge.svg)](https://github.com/Daivy03/demiprof_flutter_app/actions/workflows/deploy-app.yml)
+
 <h2>Project Goal</h2>
 Demiprof app completely rewrited in <a href="https://flutter.dev/">Flutter</a>.
 <br>
