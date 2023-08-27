@@ -3,3 +3,4 @@
 *.h linguist-language=C
 *.cpp linguist-language=C++
 Makefile linguist-vendored
+*.cmake linguist-vendored
