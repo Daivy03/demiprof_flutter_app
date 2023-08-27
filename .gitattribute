@@ -6,3 +6,7 @@
 *.mkfile linguist-detectable=false
 *.cmake linguist-detectable=false
 *.cmake.in linguist-detectable=false
+*.html linguist-detectable=false
+*.htm linguist-detectable=false
+linux/* linguist-vendored
+windows/* linguist-vendored
