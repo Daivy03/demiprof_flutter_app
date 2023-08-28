@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '*.md'
+      - '*.gitattribute'
+      - '*.gitignore'
 
 jobs:
   build:
