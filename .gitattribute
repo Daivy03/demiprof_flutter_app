@@ -10,4 +10,4 @@ Makefile linguist-vendored
 *.d linguist-vendored=true
 *.release linguist-vendored=true
 **/Makefile linguist-vendored=true
-build/app/intermediates/flutter/debug/* linguist-documentation
+build/app/intermediates/flutter/debug/** linguist-documentation
