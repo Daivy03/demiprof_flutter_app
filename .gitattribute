@@ -7,5 +7,6 @@ Makefile linguist-vendored
 *.cmake linguist-vendored
 *.stash linguist-vendored=true
 *.debug linguist-vendored=true
+*.d linguist-vendored=true
 *.release linguist-vendored=true
 **/Makefile linguist-vendored=true
