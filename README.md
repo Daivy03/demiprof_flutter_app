@@ -16,7 +16,8 @@
 Demiprof app completely rewrited in <a href="https://flutter.dev/">Flutter</a>.
 <br>
 <br>
-<img src="https://user-images.githubusercontent.com/75785698/236619604-7a214ea9-ef46-4b21-8a55-0ae4ef202673.png" width="30%" height="30%"/>
+<img src="https://user-images.githubusercontent.com/75785698/263977293-fc58648c-d958-452e-8a51-e152c5667eb2.jpg"
+width="30%" height="30%"/> 
 
 ## Getting Started
 
