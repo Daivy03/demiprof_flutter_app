@@ -4,7 +4,7 @@
   powered by
 </p>
   <a href="https://flutter.dev/">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Google-flutter-logo.svg/2560px-Google-flutter-logo.svg.png" width="25%" height="25%">
+<img src="https://storage.googleapis.com/cms-storage-bucket/ec64036b4eacc9f3fd73.svg" width="25%" height="25%">
   </a>
 </div>
 
