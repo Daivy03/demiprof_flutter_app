@@ -11,9 +11,12 @@
 [![demiprof-flutter](https://github.com/Daivy03/demiprof_flutter_app/actions/workflows/deploy-app.yml/badge.svg)](https://github.com/Daivy03/demiprof_flutter_app/actions/workflows/deploy-app.yml)
 [![Firebase Hosting](https://img.shields.io/badge/firebase-hosting-orange?logo=firebase)](https://demiprof-b12be-default-rtdb.europe-west1.firebasedatabase.app)
 
+# About
+DemiProf is an app developed by students to connect students and tutors in school or college context.
+The app is completely rewrited in <a href="https://flutter.dev/">Flutter</a>, providing cross-platform support and all the benefits that Flutter offers.
+## Project Goal
+The goal of DemiProf is to provide an easy-to-view and efficient tutoring experience by offering several features.
 
-<h2>Project Goal</h2>
-Demiprof app completely rewrited in <a href="https://flutter.dev/">Flutter</a>.
 <br>
 <br>
 <img src="https://user-images.githubusercontent.com/75785698/263977293-fc58648c-d958-452e-8a51-e152c5667eb2.jpg"
