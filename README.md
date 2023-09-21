@@ -17,8 +17,7 @@ The app is completely rewrited in <a href="https://flutter.dev/">Flutter</a>, pr
 ## Project Goal
 The goal of DemiProf is to provide an easy-to-view and efficient tutoring experience by offering several features.
 
-<br>
-<br>
+## App Preview
 <img src="https://user-images.githubusercontent.com/75785698/263977293-fc58648c-d958-452e-8a51-e152c5667eb2.jpg"
 width="30%" height="30%"/> 
 
