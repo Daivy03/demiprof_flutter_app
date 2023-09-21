@@ -16,6 +16,8 @@ DemiProf is an app developed by students to connect students and tutors in schoo
 The app is completely rewrited in <a href="https://flutter.dev/">Flutter</a>, providing cross-platform support and all the benefits that Flutter offers.
 ## Project Goal
 The goal of DemiProf is to provide an easy-to-view and efficient tutoring experience by offering several features.
+</br>
+[Project Board](https://github.com/users/Daivy03/projects/2)
 
 ## App Preview
 <img src="https://user-images.githubusercontent.com/75785698/263977293-fc58648c-d958-452e-8a51-e152c5667eb2.jpg"
